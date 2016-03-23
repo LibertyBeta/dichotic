@@ -1,0 +1,50 @@
+//values
+@import "{wolves:bourbon}/bourbon";
+@import 'variables';
+@import 'mixins';
+@import '{}/client/components/control-bar/_control-bar.scss';
+@import '{}/client/components/show-calendar/_showCalendar.scss';
+@import '{}/client/components/home/_home.scss';
+@import '{}/client/components/dog/_dog.scss';
+
+html, body {
+  height: 100%;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
+#root{
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container{
+  display: flex;
+  flex-flow: row wrap;
+  height: 100vh;
+  .body{
+    display:flex;
+    flex-flow: column wrap;
+    flex: 1;
+    background-color:pink;
+    .top{
+      height: 3rem;
+      width: 100%;
+      background:blue;
+    }
+    .content{
+      // margin-top: 1rem;
+      overflow-y: scroll;
+      display: flex;
+      background-color: yellow;
+      flex-grow: 1;
+      order:2;
+      flex-flow: row;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+<div class="container">
+  <control-bar user={{userId}}></control-bar>
+  <div class="body">
+    <div class="content">
+      <div class="dogs">
+        <dog-tag ng-repeat="dog in homeCtrl.dogs" dog="dog"></dog-tag>
+        <div class="dog form">
+          {{homeCtrl.dogForm}}
+          <form class="new-dog"  ng-submit="homeCtrl.addDog()" >
+            <input name="name" id="name" ng-model="homeCtrl.dogForm.name" type="text" placeholder="Type to add new tasks">
+            <input name="color" id="color" ng-model="homeCtrl.dogForm.color" type="text" >
+            <input name="breed" id="breed" ng-model="homeCtrl.dogForm.breed" type="text" >
+            <input type="submit">
+          </form>
+        </div>
+
+
+
+      </div>
+      <div class="sidebar">
+
+      </div>
+    </div>
+  </div>
+</div>

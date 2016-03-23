@@ -1,0 +1,22 @@
+.sidebar{
+  // background-color: green;
+  order:3;
+  flex: 1 auto;
+}
+
+.dogs{
+  // padding-top: 9rem;
+  background-color: brown;
+  order: 2;
+  flex: 8 0px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  // align-content: space-around;
+  overflow-y: scroll;
+}
+
+.dog-form{
+  flex: 1;
+}
