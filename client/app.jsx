@@ -3,12 +3,18 @@ const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
 
 App = React.createClass({
+  userId:2,
   render: function() {
     return (
-      <div>
+      <div className="container">
+        <ControlBar user={this.userId}/>
+        <div className="body">
+          {/*}<div className="top">
+            stuff goes here!
+          </div>*/}
           {this.props.children}
+        </div>
       </div>
-
     );
   }
 });
