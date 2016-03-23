@@ -1,25 +1,40 @@
-dog-tag, tag-form{
-  color:black;
-  // flex: 1;
-  padding: 0.2rem;
-  margin: 0.5rem;
-  // flex-basis: 10rem;
-  width: 10rem;
-  background-color: white;
-  border-radius: 5px;
-  border: solid 1px black;
-}
-
-
 .dog{
   &.tag,&.form{
-
+    color:black;
+    // flex: 1;
+    padding: 0.2rem;
+    margin: 0.5rem;
+    // flex-basis: 10rem;
+    width: 10rem;
+    background-color: white;
+    border-radius: 5px;
+    border: solid 1px black;
   }
 
-  &.bar{
+  .bar{
     height: 8rem;
-    width: 100%;
+    flex: 0 0 100%;
     background:blue;
   }
+  .specs{
+    height: calc(100% - 8rem);
+    flex: 2
+  }
 
+  .calendar{
+    height: calc(100% - 8rem);
+    flex: 1
+  }
+  nav{
+    width: 100%;
+    background-color: pink;
+    flex: 0 0 100%;
+  }
+
+}
+
+.content.dog{
+  flex-flow: row wrap !important;
+  align-items: flex-start;
+  align-content: flex-start;
 }

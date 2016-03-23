@@ -6,7 +6,10 @@ ControlBar = React.createClass({
   },
   render() {
     return (
-      <div className="control-bar">Icons go here. </div>
+      <div className="control-bar">
+        <i className="fa fa-2x fa-cog icon"></i>
+        <i className="fa fa-2x fa-cog icon"></i>
+      </div>
     );
   }
 });

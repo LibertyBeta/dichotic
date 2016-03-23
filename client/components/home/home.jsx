@@ -7,6 +7,8 @@ Home = React.createClass({
 
   // Loads items from the Tasks collection and puts them on this.data.tasks
   getMeteorData() {
+    let dogIds = Dogs.find({}, {_id:1}).map(function(item){ return item._id; });
+    console.log(dogIds);
     return {
       dogs: Dogs.find({}).fetch(),
       shows: Shows.find({}).fetch(),
@@ -27,7 +29,14 @@ Home = React.createClass({
       color: this.refs.color.value
     };
 
-    Dogs.insert(dog);
+    let id = Dogs.insert(dog);
+    let calendarEvent = {
+      date: new Date("tomorrow"),
+      dog: id,
+      title: "Event for " + dog.name,
+      location: "some PLACE"
+    };
+    Shows.insert(calendarEvent);
   },
   renderCalendar(){
     // console.log(this.data.shows.length);
@@ -36,7 +45,7 @@ Home = React.createClass({
       return 'No upcoming events';
     } else {
       return this.data.shows.map((show)=> {
-        return <ShowCalendarSidebar data={show} />;
+        return <ShowCalendarSidebar key={show._id} show={show} />;
       });
     }
 

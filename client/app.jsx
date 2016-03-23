@@ -1,4 +1,4 @@
-const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
+const {Router, Route, Link, IndexRoute, browserHistory} = ReactRouter;
 
 
 
@@ -19,9 +19,21 @@ App = React.createClass({
   }
 });
 
+Login = React.createClass({
+  userId:2,
+  render: function() {
+    return (
+      <div className="container">
+        LOGIN.
+      </div>
+    );
+  }
+});
+
 Meteor.startup(function() {
   ReactDOM.render((
     <Router history={browserHistory}>
+      <Route path="/login" component={Login}/>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="test" component={NotFoundPage} />

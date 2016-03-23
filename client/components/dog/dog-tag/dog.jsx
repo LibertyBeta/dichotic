@@ -1,3 +1,5 @@
+const {Link} = ReactRouter;
+
 Dog = React.createClass({
   propTypes: {
     // This component gets the task to display through a React prop.
@@ -15,8 +17,7 @@ Dog = React.createClass({
         <h1>{this.props.dog.name}</h1>
         <span>{this.props.dog.breed}</span>
         <span>{this.props.dog.color}</span>
-
-        <a href={'/dog/' + this.props.dog._id}>{this.props.dog._id}</a>
+        <Link to={`/dog/${this.props.dog._id}`}>details</Link>
       </div>
     );
   }
