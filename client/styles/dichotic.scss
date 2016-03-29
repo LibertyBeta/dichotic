@@ -2,10 +2,10 @@
 @import "{wolves:bourbon}/bourbon";
 @import 'variables';
 @import 'mixins';
-@import '{}/client/components/control-bar/_control-bar.scss';
-@import '{}/client/components/show-calendar/_show-calendar.scss';
-@import '{}/client/components/home/_home.scss';
-@import '{}/client/components/dog/_dog.scss';
+@import '../../imports/components/control-bar/_control-bar.scss';
+@import '../../imports/components/show-calendar/_show-calendar.scss';
+@import '../../imports/components/home/_home.scss';
+@import '../../imports/components/dog/_dog.scss';
 
 html, body {
   height: 100%;

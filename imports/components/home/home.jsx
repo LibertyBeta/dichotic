@@ -1,28 +1,30 @@
+import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
+import { Dogs } from "../../api/dogs.jsx";
+import { Shows } from "../../api/shows.jsx"
+import Dog from "../dog/dog-tag/dog.jsx"
+import ShowCalendarSidebar from "../show-calendar/show-calendar-sidebar.jsx"
+
+
+
 // Task component - represents a single todo item
-Home = React.createClass({
+export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.addDog = this.addDog.bind(this);
+  }
 
-  // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData],
-  userId: 1,
-
-  // Loads items from the Tasks collection and puts them on this.data.tasks
-  getMeteorData() {
-    let dogIds = Dogs.find({}, {_id:1}).map(function(item){ return item._id; });
-    console.log(dogIds);
-    return {
-      dogs: Dogs.find({}).fetch(),
-      shows: Shows.find({}).fetch(),
-    }
-  },
   renderDogs(){
-    return this.data.dogs.map((dog) => {
+    return this.props.dogs.map((dog) => {
+      // return "test";
       return <Dog key={dog._id} dog={dog} />;
     });
-  },
+  }
+
   addDog(event){
     event.preventDefault();
     console.log("none");
-    console.log(this.refs.name.value);
+    console.log(this.refs.name);
     let dog = {
       name: this.refs.name.value,
       breed: this.refs.breed.value,
@@ -37,19 +39,20 @@ Home = React.createClass({
       location: "some PLACE"
     };
     Shows.insert(calendarEvent);
-  },
+  }
+
   renderCalendar(){
     // console.log(this.data.shows.length);
-    if(this.data.shows.length < 1){
-      // console.log("No events to see");
+    if(this.props.shows.length < 1){
+      console.log("No events to see");
       return 'No upcoming events';
     } else {
-      return this.data.shows.map((show)=> {
+      return this.props.shows.map((show)=> {
         return <ShowCalendarSidebar key={show._id} show={show} />;
       });
     }
 
-  },
+  }
 
   render() {
     return (
@@ -83,4 +86,11 @@ Home = React.createClass({
           </div>
     );
   }
-});
+}
+
+export default createContainer(() => {
+  return {
+    dogs: Dogs.find({}).fetch(),
+    shows: Shows.find({}).fetch(),
+  };
+}, Home);
