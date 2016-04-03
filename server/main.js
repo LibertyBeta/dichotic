@@ -1,2 +1,2 @@
-// import '../imports/api/dogs.jsx';
-// import '../imports/api/shows.jsx';
+import '../imports/api/dogs.jsx';
+import '../imports/api/shows.jsx';

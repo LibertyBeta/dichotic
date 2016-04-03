@@ -1,22 +1,50 @@
-.sidebar{
-  // background-color: green;
-  order:3;
-  flex: 1 auto;
+.content{
+  .sidebar{
+    // background-color: green;
+    order:3;
+    flex: 1 auto;
+  }
+
+  .dogs{
+    // padding-top: 9rem;
+    background-color: brown;
+    order: 2;
+    flex: 8 0px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow-y: scroll;
+  }
+
+  .add{
+    background: white;
+  }
 }
 
-.dogs{
-  // padding-top: 9rem;
-  background-color: brown;
-  order: 2;
-  flex: 8 0px;
+
+.modal{
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: flex-start;
-  // align-content: space-around;
-  overflow-y: scroll;
-}
+  align-items: center;
+  justify-content: center;
+  align-content: space-around;
+  background-color: rgba(gray, 0.7);
+  left: 0;
+  right: 0;
+  top: 0;
+  border-bottom: 0;
+  position: absolute;
+  &.hidden{
+    display:none;
+  }
+  .modal-content{
+    background-color: $background;
+    padding: 0.5rem;
+    form{
 
-.dog-form{
-  flex: 1;
+    }
+  }
 }

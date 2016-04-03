@@ -1,31 +1,13 @@
-// Task component - represents a single todo item
-DogDetails = React.createClass({
+import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
+import {Link} from 'react-router';
 
-  // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData],
-  // propTypes: {
-  //   // This component gets the task to display through a React prop.
-  //   // We can use propTypes to indicate it is required
-  //   id: React.PropTypes.string.isRequired
-  // },
-  userId: 1,
+import { Dogs } from "../../../api/dogs.jsx";
+import { Shows } from "../../../api/shows.jsx"
 
-  // Loads items from the Tasks collection and puts them on this.data.tasks
-  getMeteorData() {
-    console.log(this.props.params.id);
-    let query = {_id:this.props.params.id};
-    console.log(query);
-
-    return {
-      dog: Dogs.findOne({_id:this.props.params.id})
-
-    }
-  },
-
-
+export default class DogDetails extends Component {
 
   render() {
-    console.log(this.data.dog);
     return (
 
           <div className="content dog">
@@ -34,7 +16,7 @@ DogDetails = React.createClass({
                 <img></img>
               </span>
               <h1>
-                {this.data.dog.name}
+                {this.props.dog.name}
               </h1>
             </div>
             <nav>
@@ -60,4 +42,25 @@ Chuck tongue cupim, tail pork belly swine capicola beef ham hock. Boudin chicken
 
     );
   }
-});
+};
+
+DogDetails.defaultProps = {
+  dog: {},
+  shows: [],
+}
+
+DogDetails.propTypes = {
+  dog: React.PropTypes.object,
+  shows: React.PropTypes.array,
+}
+
+export default createContainer(({params}) => {
+  console.log(params.id);
+  let dogQuery = {_id:params.id};
+  let showQuery = {dog:params.id};
+  // console.log(query);
+  return {
+    dog: Dogs.findOne(dogQuery),
+    shows: Shows.find(showQuery).fetch(),
+  };
+}, DogDetails);
