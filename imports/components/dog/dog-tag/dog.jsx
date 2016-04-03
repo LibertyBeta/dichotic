@@ -3,12 +3,15 @@ import { createContainer } from 'meteor/react-meteor-data';
 import {Link} from 'react-router';
 
 export default class Dog extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     return (
       <div className="dog tag">
         <span className="image">
-          <img></img>
+          <img src={this.props.image.url()}></img>
         </span>
         <h1>{this.props.dog.name}</h1>
         <span>{this.props.dog.breed}</span>
@@ -19,9 +22,13 @@ export default class Dog extends Component {
   }
 };
 
+Dog.defaultProps = {
+  image : {},
+}
 
 Dog.propTypes = {
   // This component gets the task to display through a React prop.
   // We can use propTypes to indicate it is required
-  dog: React.PropTypes.object.isRequired
+  dog: React.PropTypes.object.isRequired,
+  image: React.PropTypes.object.isRequired
 };

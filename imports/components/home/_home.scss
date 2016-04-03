@@ -16,6 +16,15 @@
     align-items: flex-start;
     align-content: flex-start;
     overflow-y: scroll;
+    #add{
+      background: pink;
+      // flex: 1;
+      @include tag-sizing();
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-content: space-around;
+    }
   }
 
   .add{

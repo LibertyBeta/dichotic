@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Dogs } from "../../api/dogs.jsx";
+import { Dogs, DogImages } from "../../api/dogs.jsx";
 import { Shows } from "../../api/shows.jsx"
 import Dog from "../dog/dog-tag/dog.jsx"
 import ShowCalendarSidebar from "../show-calendar/show-calendar-sidebar.jsx"
@@ -23,15 +23,19 @@ export default class Home extends Component {
   renderDogs(){
     return this.props.dogs.map((dog) => {
       // return "test";
-      return <Dog key={dog._id} dog={dog} />;
+      return <Dog key={dog._id} dog={dog} image={this.props.images[dog.image]} />;
     });
   }
 
   addDog(event){
     event.preventDefault();
     console.log("none");
-    console.log(this.refs.name);
+    console.log(this.refs.image.files[0]);
+    let file = DogImages.insert(this.refs.image.files[0]);
+    // let file = DogImages.insert(this.refs.image.files[0]);
+    console.log(file);
     let dog = {
+      image: file._id,
       name: this.refs.name.value,
       breed: this.refs.breed.value,
       // color: this.refs.color.value
@@ -48,7 +52,7 @@ export default class Home extends Component {
       location: "some PLACE"
     };
     Shows.insert(calendarEvent);
-    browserHistory.push('/dog/'+id);
+    // browserHistory.push('/dog/'+id);
   }
 
   renderCalendar(){
@@ -86,7 +90,7 @@ export default class Home extends Component {
             <div className="dogs">
               {this.renderDogs()}
               <div id="add" onClick={this.showModal}>
-                Add a dog.
+                <i className="fa fa-plus-square-o fa-3x"></i>
               </div>
             </div>
             <div className="sidebar">
@@ -98,6 +102,7 @@ export default class Home extends Component {
                 <form className="new-dog" onSubmit={this.addDog} >
                   <input
                     type="file"
+                    ref="image"
                     accept="jpeg/png"
                     />
                   <input
@@ -119,6 +124,7 @@ export default class Home extends Component {
 }
 
 Home.defaultState = {
+  id: 1,
   modal : true,
 }
 
@@ -128,10 +134,21 @@ export default createContainer(() => {
   let idsPre = Dogs.find({}, {fields:{_id:1}}).fetch();
   for (let id of idsPre) {
     ids.push(id._id);
+  }let imageIds = [];
+  idsPre = Dogs.find({}, {fields:{image:1}}).fetch();
+  for (let id of idsPre) {
+    imageIds.push(id.image);
   }
+  let imageStore = {};
+  console.log("IMAGE ID");
+  for (file of DogImages.find({_id:{$in:imageIds}}).fetch()) {
+    imageStore[file._id] = file;
+  }
+  console.log(imageStore);
 
   return {
     dogs: Dogs.find({}).fetch(),
     shows: Shows.find({dog:{$in:ids}}).fetch(),
+    images: imageStore,
   };
 }, Home);

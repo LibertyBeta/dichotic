@@ -9,6 +9,21 @@
     background-color: white;
     border-radius: 5px;
     border: solid 1px black;
+    .image{
+      // background-color: black;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-around;
+      img{
+        padding: 2px;
+        background-color: black;
+        border-radius: 50%;
+        width: 6rem;
+        height: 6rem;
+      }
+
+    }
   }
 
   .bar{
