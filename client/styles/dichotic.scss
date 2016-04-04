@@ -52,9 +52,18 @@ body{
     background: none;
     background-color: rgba(gray, 0.5);
     border: 1px solid rgba(gray, 0.5);
-    border-radius: 4px;
+    border-radius: 2px;
     padding: 0.2rem 0.3rem;
     margin: 0.2rem;
+    &:first-of-type{
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+
+    }
+    &:last-of-type{
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
     &:hover{
       background-color: rgba(gray, 0.8);
       border: 1px solid rgba(gray, 0.6);

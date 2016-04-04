@@ -10,9 +10,34 @@ export default class DogDetails extends Component {
     super(props);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.modalShow = this.modalShow.bind(this);
+    this.modalRemove = this.modalRemove.bind(this);
+    this.modalMedical = this.modalMedical.bind(this);
+
+
     this.state = {
       modalHelperClass : "hidden",
+      modal:""
     };
+  }
+
+  modalShow(){
+    this.modalCase(this.props.modals.show);
+  }
+
+  modalRemove(){
+    this.modalCase(this.props.modals.remove);
+  }
+
+  modalMedical(){
+    this.modalCase(this.props.modals.medical);
+  }
+
+  modalCase(typeOfModal){
+    this.setState({
+      modal: typeOfModal,
+      modalHelperClass: '',
+    });
   }
 
   hideModal(){
@@ -25,6 +50,23 @@ export default class DogDetails extends Component {
     this.setState({
       modalHelperClass: '',
     });
+  }
+
+  renderModal(){
+    switch (this.state.modal) {
+      case this.props.modals.shows:
+        return "MODAL FOR ADDING SHOWS";
+        break;
+      case this.props.modals.medical:
+        return "MODAL FOR ADDING MEDICAL";
+        break;
+      case this.props.modals.remove:
+        return "MODAL FOR ADDING REMOVING";
+        break;
+      default:
+        return "NO MODAL SET";
+        break;
+    }
   }
 
   render() {
@@ -41,9 +83,9 @@ export default class DogDetails extends Component {
 
             </div>
             <nav>
-              <button>add medical document</button>
-              <button>add show</button>
-              <button>remove dog</button>
+              <button onClick={this.modalMedical}>add medical document</button>
+              <button onClick={this.modalShow}>add show</button>
+              <button onClick={this.modalRemove}>remove dog</button>
             </nav>
             <dig className="specs">
               THIS IS WERE THE DOG SPECS GO
@@ -56,7 +98,7 @@ export default class DogDetails extends Component {
               <div className="modal-content">
                 <button onClick={this.hideModal}>X</button>
                 <form>
-                FORM FOR MODAL HERE.
+                {this.renderModal()}
                 </form>
               </div>
             </div>
@@ -73,6 +115,11 @@ DogDetails.defaultProps = {
     url(){
       return '';
     }
+  },
+  modals:{
+    'remove':"remove",
+    'show':"show",
+    'medical':"medical"
   }
 }
 
