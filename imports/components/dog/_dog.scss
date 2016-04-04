@@ -8,8 +8,11 @@
     width: 10rem;
     background-color: white;
     border-radius: 5px;
-    border: solid 1px black;
+    // border: solid 1px black;
     text-align: center;
+    box-shadow:
+      3px 4px 0px 0px rgba($border-shade,0.8),
+      0px 0px 0px 1px $border-shade;
   }
 
   .thumb-image{
@@ -19,8 +22,9 @@
     align-items: center;
     justify-content: space-around;
     img{
-      padding: 4px;
-      background-color: black;
+      margin-top: 5px;
+      // background-color: $border-shade;
+      box-shadow: 0 0 0 3px $border-shade;
       border-radius: 50%;
       width: 6rem;
       height: 6rem;

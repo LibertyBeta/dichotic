@@ -41,7 +41,7 @@ body{
       // margin-top: 1rem;
       overflow-y: scroll;
       display: flex;
-      // background-color: yellow;
+      background-color: $background-color;
       flex-grow: 1;
       order:2;
       flex-flow: row;
