@@ -25,3 +25,4 @@ fourseven:scss
 fortawesome:fontawesome
 cfs:standard-packages
 cfs:filesystem
+numtel:cfs-image-resize

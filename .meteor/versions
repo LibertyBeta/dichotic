@@ -66,6 +66,7 @@ mongo@1.1.5
 mongo-id@1.0.2
 mongo-livedata@1.0.10
 npm-mongo@1.4.41
+numtel:cfs-image-resize@0.0.3
 observe-sequence@1.0.9
 ordered-dict@1.0.5
 promise@0.6.5

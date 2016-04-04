@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Dogs, DogImages } from "../../api/dogs.jsx";
-import { Shows } from "../../api/shows.jsx"
-import Dog from "../dog/dog-tag/dog.jsx"
-import ShowCalendarSidebar from "../show-calendar/show-calendar-sidebar.jsx"
+import { Dogs, DogImages } from '../../api/dogs.jsx';
+import { Shows } from '../../api/shows.jsx';
+import Dog from '../dog/dog-tag/dog.jsx';
+import ShowCalendarSidebar from '../show-calendar/show-calendar-sidebar.jsx';
 
 
 
@@ -52,7 +52,7 @@ export default class Home extends Component {
       location: "some PLACE"
     };
     Shows.insert(calendarEvent);
-    // browserHistory.push('/dog/'+id);
+    browserHistory.push('/dog/'+id);
   }
 
   renderCalendar(){
@@ -85,7 +85,6 @@ export default class Home extends Component {
   render() {
     console.log(this.props.ids);
     return (
-
           <div className="content">
             <div className="dogs">
               {this.renderDogs()}
@@ -118,14 +117,13 @@ export default class Home extends Component {
               </div>
             </div>
           </div>
-
     );
   }
 }
 
 Home.defaultState = {
   id: 1,
-  modal : true,
+  modalHelperClass : '',
 }
 
 
