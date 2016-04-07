@@ -31,6 +31,8 @@ body{
     display:flex;
     flex-flow: column wrap;
     flex: 1;
+    min-height: 100vh;
+    overflow: auto;
     // background-color:pink;
     .top{
       height: 3rem;

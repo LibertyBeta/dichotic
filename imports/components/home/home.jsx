@@ -43,18 +43,18 @@ export default class Home extends Component {
       gender: this.refs.gender.value,
       // color: this.refs.color.value
     };
-    console.log(dog);
+    // console.log(dog);
     const id = Dogs.insert(dog);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    console.log(tomorrow.toString());
-    const calendarEvent = {
-      date: tomorrow,
-      dog: id,
-      title: "Event for " + dog.name,
-      location: "some PLACE"
-    };
-    Shows.insert(calendarEvent);
+    // const tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate() + 1)
+    // console.log(tomorrow.toString());
+    // const calendarEvent = {
+    //   date: tomorrow,
+    //   dog: id,
+    //   title: "Event for " + dog.name,
+    //   location: "some PLACE"
+    // };
+    // Shows.insert(calendarEvent);
     browserHistory.push('/dog/'+id);
   }
 

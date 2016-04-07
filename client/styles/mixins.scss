@@ -4,7 +4,5 @@
   width: 10rem;
   background-color: white;
   border-radius: 5px;
-  box-shadow:
-    3px 3px 0px 0px rgba($border-shade,0.8),
-    0px 0px 0px 1px $border-shade;
+  box-shadow:$nintendo-shadow;
 }
