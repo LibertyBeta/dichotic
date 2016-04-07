@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {Link} from 'react-router';
 
+import MedicalModal from '../../modal/medical-modal.jsx';
+import ShowModal from '../../modal/show-modal.jsx';
+import RemoveModal from '../../modal/remove-modal.jsx';
+
 import { Dogs, DogImages } from "../../../api/dogs.jsx";
 import { Shows } from "../../../api/shows.jsx"
 
@@ -54,14 +58,14 @@ export default class DogDetails extends Component {
 
   renderModal(){
     switch (this.state.modal) {
-      case this.props.modals.shows:
-        return "MODAL FOR ADDING SHOWS";
+      case this.props.modals.show:
+        return <ShowModal dog={this.props.dog}/>;
         break;
       case this.props.modals.medical:
-        return "MODAL FOR ADDING MEDICAL";
+        return <MedicalModal dog={this.props.dog}/>;
         break;
       case this.props.modals.remove:
-        return "MODAL FOR ADDING REMOVING";
+        return <RemoveModal dog={this.props.dog}/>;
         break;
       default:
         return "NO MODAL SET";
@@ -88,7 +92,12 @@ export default class DogDetails extends Component {
               <button onClick={this.modalRemove}>remove dog</button>
             </nav>
             <dig className="specs">
-              THIS IS WERE THE DOG SPECS GO
+              <div className="biological">
+                Name: {this.props.dog.name}
+                Breed: {this.props.dog.breed}
+                Color: {this.props.dog.color}
+                Gender: {this.props.dog.gender}
+              </div>
             </dig>
             <div className="calendar">
               <button onClick={this.showModal}>Add event</button>
@@ -130,8 +139,8 @@ DogDetails.propTypes = {
 
 export default createContainer(({params}) => {
   console.log(params.id);
-  let dogQuery = {_id:params.id};
-  let showQuery = {dog:params.id};
+  const dogQuery = {_id:params.id};
+  const showQuery = {dog:params.id};
   let imageId = Dogs.findOne(dogQuery, {fields:{image:true}});
   if(typeof imageId === 'undefined'){
     imageId = {

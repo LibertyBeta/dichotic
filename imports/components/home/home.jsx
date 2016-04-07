@@ -17,6 +17,7 @@ export default class Home extends Component {
     this.showModal = this.showModal.bind(this);
     this.state = {
       modalHelperClass : "hidden",
+      dogName : ""
     };
   }
 
@@ -31,21 +32,23 @@ export default class Home extends Component {
     event.preventDefault();
     console.log("none");
     console.log(this.refs.image.files[0]);
-    let file = DogImages.insert(this.refs.image.files[0]);
+    const file = DogImages.insert(this.refs.image.files[0]);
     // let file = DogImages.insert(this.refs.image.files[0]);
     console.log(file);
-    let dog = {
+
+    const dog = {
       image: file._id,
       name: this.refs.name.value,
       breed: this.refs.breed.value,
+      gender: this.refs.gender.value,
       // color: this.refs.color.value
     };
-
-    let id = Dogs.insert(dog);
-    let tomorrow = new Date();
+    console.log(dog);
+    const id = Dogs.insert(dog);
+    const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1)
     console.log(tomorrow.toString());
-    let calendarEvent = {
+    const calendarEvent = {
       date: tomorrow,
       dog: id,
       title: "Event for " + dog.name,
@@ -97,7 +100,7 @@ export default class Home extends Component {
             </div>
             <div className={"modal "+ this.state.modalHelperClass}>
               <div className="modal-content">
-                <button onClick={this.hideModal}>X</button>
+                <button className="material" onClick={this.hideModal}>X</button>
                 <form className="new-dog" onSubmit={this.addDog} >
                   <input
                     type="file"
@@ -107,7 +110,18 @@ export default class Home extends Component {
                   <input
                     type="text"
                     ref="name"
-                    placeholder="The Name of the Dog" />
+                    placeholder="The Name of the Dog"
+                    />
+                  <input
+                    type="text"
+                    ref="breed"
+                    placeholder="The Breed of the Dog" />
+                  <select ref="gender" value="-">
+                    <option value="Male">Male</option>
+                    <option value="Fixed Male">Fixed Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Fixed Female">Fixed Female</option>
+                  </select>
                   <input
                     type="text"
                     ref="breed"
@@ -129,12 +143,13 @@ Home.defaultState = {
 
 export default createContainer(() => {
   let ids = [];
-  let idsPre = Dogs.find({}, {fields:{_id:1}}).fetch();
+  const idsPre = Dogs.find({}, {fields:{_id:1}}).fetch();
   for (let id of idsPre) {
     ids.push(id._id);
-  }let imageIds = [];
-  idsPre = Dogs.find({}, {fields:{image:1}}).fetch();
-  for (let id of idsPre) {
+  }
+  let imageIds = [];
+  const imageIdsPre = Dogs.find({}, {fields:{image:1}}).fetch();
+  for (let id of imageIdsPre) {
     imageIds.push(id.image);
   }
   let imageStore = {};
