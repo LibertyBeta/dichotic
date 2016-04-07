@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import MedicalModal from '../../modal/medical-modal.jsx';
 import ShowModal from '../../modal/show-modal.jsx';
 import RemoveModal from '../../modal/remove-modal.jsx';
+import ShowCalendarPage from '../../show-calendar/show-calendar-page.jsx';
 
 import { Dogs, DogImages } from "../../../api/dogs.jsx";
 import { Shows } from "../../../api/shows.jsx"
@@ -17,11 +18,29 @@ export default class DogDetails extends Component {
     this.modalShow = this.modalShow.bind(this);
     this.modalRemove = this.modalRemove.bind(this);
     this.modalMedical = this.modalMedical.bind(this);
-
+    const today = new Date();
+    const day = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    lastOftheMonth.setMonth(lastOftheMonth.getMonth() + 1);
+    lastOftheMonth.setDate(lastOftheMonth.getDate() - 1);
+    let i = 0;
+    const calendarDays = [];
+    while(i < day.getUTCDay()){
+      calendarDays.push("null " + i);
+      i++;
+    }
+    do {
+      calendarDays.push(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
+    } while (day.setDate(day.getDate() + 1) <= lastOftheMonth);
+    console.log(calendarDays);
 
     this.state = {
       modalHelperClass : "hidden",
-      modal:""
+      modal:"",
+      style: {
+        backgroundImage : this.props.backgroundUrl,
+      },
+      calendar: calendarDays,
     };
   }
 
@@ -59,7 +78,7 @@ export default class DogDetails extends Component {
   renderModal(){
     switch (this.state.modal) {
       case this.props.modals.show:
-        return <ShowModal dog={this.props.dog}/>;
+        return <ShowModal dog={this.props.dog} dismiss={this.hideModal}/>;
         break;
       case this.props.modals.medical:
         return <MedicalModal dog={this.props.dog}/>;
@@ -73,42 +92,40 @@ export default class DogDetails extends Component {
     }
   }
 
+  renderShows(){
+    return
+  }
+
   render() {
     return (
           <div className="content dog">
-            <div className="bar" >
-              {/*<img className="backgrounded" src={this.props.image.url()}></img>*/}
+            <div className="bar" style={this.state.style}>
               <div className="thumb-image">
                 <img src={this.props.image.url({state:'thumbs'})}></img>
               </div>
               <h1>
                 {this.props.dog.name}
               </h1>
-
+              <nav>
+                <button onClick={this.modalMedical}>add medical document</button>
+                <button onClick={this.modalShow}>add show</button>
+                <button onClick={this.modalRemove}>remove dog</button>
+              </nav>
             </div>
-            <nav>
-              <button onClick={this.modalMedical}>add medical document</button>
-              <button onClick={this.modalShow}>add show</button>
-              <button onClick={this.modalRemove}>remove dog</button>
-            </nav>
-            <dig className="specs">
+
+            <div className="specs">
               <div className="biological">
                 Name: {this.props.dog.name}
                 Breed: {this.props.dog.breed}
                 Color: {this.props.dog.color}
                 Gender: {this.props.dog.gender}
               </div>
-            </dig>
-            <div className="calendar">
-              <button onClick={this.showModal}>Add event</button>
-              Bacon ipsum dolor amet short ribs spare ribs pork loin shoulder ball tip, bacon picanha sausage ground round. Venison doner filet mignon cupim. Kevin cow turkey ribeye short ribs. Leberkas shoulder pig, turkey jerky flank corned beef cupim t-bone meatloaf fatback brisket picanha tail cow. Strip steak t-bone doner shankle. Turkey rump swine flank. Tail rump meatloaf, pork chop beef ribs frankfurter prosciutto cupim drumstick pork hamburger.
             </div>
+            <ShowCalendarPage shows={this.props.shows} />;
             <div className={"modal "+ this.state.modalHelperClass}>
               <div className="modal-content">
                 <button onClick={this.hideModal}>X</button>
-                <form>
                 {this.renderModal()}
-                </form>
               </div>
             </div>
           </div>
@@ -125,6 +142,7 @@ DogDetails.defaultProps = {
       return '';
     }
   },
+  backgroundUrl : '',
   modals:{
     'remove':"remove",
     'show':"show",
@@ -134,22 +152,47 @@ DogDetails.defaultProps = {
 
 DogDetails.propTypes = {
   dog: React.PropTypes.object,
-  shows: React.PropTypes.array,
+  shows: React.PropTypes.object,
 }
 
 export default createContainer(({params}) => {
   console.log(params.id);
   const dogQuery = {_id:params.id};
-  const showQuery = {dog:params.id};
+
   let imageId = Dogs.findOne(dogQuery, {fields:{image:true}});
   if(typeof imageId === 'undefined'){
     imageId = {
       image:""
     };
   }
+  const today = new Date();
+  const firstOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  lastOftheMonth.setMonth(lastOftheMonth.getMonth() + 1);
+  lastOftheMonth.setDate(lastOftheMonth.getDate() - 1);
+  console.log("getting events between " + firstOftheMonth + " and " + lastOftheMonth);
+  const showQuery = {
+    dog:params.id,
+    date:{
+      $gte: firstOftheMonth,
+      $lte: lastOftheMonth
+    }
+  };
+  console.info(showQuery);
+  const shows = Shows.find(showQuery).fetch();
+  console.log(shows);
+  const monthShows = {};
+  for(show of shows){
+    if(typeof monthShows[show.date.getDate()] === 'undefined'){
+      monthShows[show.date.getDate()] = [];
+    }
+    monthShows[show.date.getDate()].push(show);
+  }
+
+
   return {
     dog: Dogs.findOne(dogQuery),
-    shows: Shows.find(showQuery).fetch(),
+    shows: monthShows,
     image: DogImages.findOne({_id:imageId.image}),
   };
 }, DogDetails);

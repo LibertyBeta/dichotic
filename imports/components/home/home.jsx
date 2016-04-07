@@ -58,15 +58,15 @@ export default class Home extends Component {
     browserHistory.push('/dog/'+id);
   }
 
-  renderCalendar(){
-    // console.log(this.data.shows.length);
-    if(this.props.shows.length < 1){
-      console.log("No events to see");
-      return 'No upcoming events';
+  renderCalendar(shows){
+    console.log(shows);
+    if(shows.length < 1){
+      return "No Upcoming Shows.";
     } else {
-      return this.props.shows.map((show)=> {
-        return <ShowCalendarSidebar key={show._id} show={show} />;
-      });
+      return shows.map((show)=> {
+        console.error(show);
+          return <ShowCalendarSidebar key={show._id} show={show} />;
+        });
     }
 
   }
@@ -86,7 +86,7 @@ export default class Home extends Component {
   }
 
   render() {
-    console.log(this.props.ids);
+    console.log(this.props.nearShows);
     return (
           <div className="content">
             <div className="dogs">
@@ -96,7 +96,10 @@ export default class Home extends Component {
               </div>
             </div>
             <div className="sidebar">
-              {this.renderCalendar()}
+              <h3>Next Seven Days</h3>
+              {this.renderCalendar(this.props.nearShows)}
+              <h3>Next 15 days</h3>
+              {this.renderCalendar(this.props.farShows)}
             </div>
             <div className={"modal "+ this.state.modalHelperClass}>
               <div className="modal-content">
@@ -140,6 +143,12 @@ Home.defaultState = {
   modalHelperClass : '',
 }
 
+Home.defaultProps = {
+  dogs: [],
+  nearShows: [],
+  farShows: [],
+
+}
 
 export default createContainer(() => {
   let ids = [];
@@ -159,9 +168,37 @@ export default createContainer(() => {
   }
   console.log(imageStore);
 
+  const today = new Date();
+
+  const farEnd = new Date();
+  farEnd.setDate(today.getDate() + 20);
+  const nearEnd = new Date();
+  nearEnd.setDate(today.getDate() + 7);
+
+  const farShowQuery = {
+    dog:
+      {$in:ids},
+    date:{
+      $gte: nearEnd,
+      $lte: farEnd
+    }
+  };
+
+  const nearShowQuery = {
+    dog:
+      {$in:ids},
+    date:{
+      $gte: today,
+      $lt: nearEnd
+    }
+  };
+
+  console.info(Shows.find(nearShowQuery).fetch());
+
   return {
     dogs: Dogs.find({}).fetch(),
-    shows: Shows.find({dog:{$in:ids}}).fetch(),
+    farShows: Shows.find(farShowQuery).fetch(),
+    nearShows: Shows.find(nearShowQuery).fetch(),
     images: imageStore,
   };
 }, Home);

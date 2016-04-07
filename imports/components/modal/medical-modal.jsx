@@ -9,7 +9,14 @@ export default class MedicalModal extends Component{
 
   render() {
     return (
-      <section>MEDICAL MODAL</section>
+      <section>
+        <form>
+          <input ref="document" type="file"/>
+          <input ref="title" type="text" placeholder="title"/>
+          <input ref="expires" type="date" />
+          <button type="submit"> Add form to Dog</button>
+        </form>
+      </section>
 
     );
   }

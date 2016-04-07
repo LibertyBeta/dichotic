@@ -19,9 +19,7 @@ export default class Dog extends Component {
           <img src={this.props.image.url({store:"thumbs"})}></img>
         </div>
         <h1>{this.props.dog.name}</h1>
-        // <span>{this.props.dog.breed}</span>
-        // <span>{this.props.dog.color}</span>
-        <Link to={`/dog/${this.props.dog._id}`}>details</Link>
+        <Link to={`/dog/${this.props.dog._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>
       </div>
     );
   }

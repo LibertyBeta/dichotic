@@ -10,9 +10,9 @@ export default class ShowCalendarSidebar extends Component{
   render() {
     return (
       <div className="calendar">
-        <p>{this.props.show.title}</p>
-        <p>{this.props.show.location}</p>
-        <p>{this.props.show.date.toString()}</p>
+        <div>{this.props.show.name}</div>
+        <div>{this.props.show.location}</div>
+        <div>{this.props.show.date.getFullYear()} - {this.props.show.date.getMonth() + 1} - {this.props.show.date.getDate()}</div>
       </div>
     );
   }

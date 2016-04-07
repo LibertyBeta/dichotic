@@ -39,7 +39,7 @@ body{
     }
     .content{
       // margin-top: 1rem;
-      overflow-y: scroll;
+      overflow-y: none;
       display: flex;
       background-color: $background-color;
       flex-grow: 1;

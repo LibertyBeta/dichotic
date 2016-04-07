@@ -14,7 +14,7 @@ export default class ControlBar extends Component{
   render() {
     return (
       <div className="control-bar">
-        <Link to={`/`}><i className="fa fa-2x fa-cog icon"></i></Link>
+        <Link to={`/`}><i className="fa fa-2x fa-home icon"></i></Link>
         <i className="fa fa-2x fa-cog icon"></i>
       </div>
     );
