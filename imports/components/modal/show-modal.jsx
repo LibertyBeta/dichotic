@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 import {Link} from 'react-router';
 
 import { Shows } from "../../api/shows.jsx"
@@ -23,9 +24,14 @@ export default class ShowModal extends Component{
       weather: "TBA",
       // color: this.refs.color.value
     };
-    console.log(calendarEvent)
-    console.log(Shows.insert(calendarEvent));
-    this.props.dismiss();
+    Meteor.call("calendar.insert", calendarEvent, function(error, result) {
+      if(error){
+        console.error(error);
+      } else {
+        this.props.dismiss();
+      }
+    })
+
   }
 
   render() {

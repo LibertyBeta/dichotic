@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 import {Link} from 'react-router';
 
 import MedicalModal from '../../modal/medical-modal.jsx';
@@ -32,8 +33,6 @@ export default class DogDetails extends Component {
     do {
       calendarDays.push(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
     } while (day.setDate(day.getDate() + 1) <= lastOftheMonth);
-    console.log(calendarDays);
-
     this.state = {
       modalHelperClass : "hidden",
       modal:"",
@@ -101,7 +100,7 @@ export default class DogDetails extends Component {
           <div className="content dog">
             <div className="bar" style={this.state.style}>
               <div className="thumb-image">
-                <img src={this.props.image.url({state:'thumbs'})}></img>
+                <img src={this.props.image.url({store:'thumbs'})}></img>
               </div>
               <h1>
                 {this.props.dog.name}
@@ -156,7 +155,14 @@ DogDetails.propTypes = {
 }
 
 export default createContainer(({params}) => {
-  console.log(params.id);
+  let dogImageId ='';
+  let test = "FART";
+  Meteor.subscribe("dog", params.id);
+  Meteor.subscribe("aDogsShow",params.id);
+
+  console.log(test);
+
+
   const dogQuery = {_id:params.id};
 
   let imageId = Dogs.findOne(dogQuery, {fields:{image:true}});
@@ -165,6 +171,7 @@ export default createContainer(({params}) => {
       image:""
     };
   }
+  Meteor.subscribe("dogImages", imageId.image);
   const today = new Date();
   const firstOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -178,9 +185,9 @@ export default createContainer(({params}) => {
       $lte: lastOftheMonth
     }
   };
-  console.info(showQuery);
+
   const shows = Shows.find(showQuery).fetch();
-  console.log(shows);
+
   const monthShows = {};
   for(show of shows){
     if(typeof monthShows[show.date.getDate()] === 'undefined'){

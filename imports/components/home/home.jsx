@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Dogs, DogImages } from '../../api/dogs.jsx';
@@ -44,27 +45,24 @@ export default class Home extends Component {
       // color: this.refs.color.value
     };
     // console.log(dog);
-    const id = Dogs.insert(dog);
-    // const tomorrow = new Date();
-    // tomorrow.setDate(tomorrow.getDate() + 1)
-    // console.log(tomorrow.toString());
-    // const calendarEvent = {
-    //   date: tomorrow,
-    //   dog: id,
-    //   title: "Event for " + dog.name,
-    //   location: "some PLACE"
-    // };
-    // Shows.insert(calendarEvent);
-    browserHistory.push('/dog/'+id);
+    // const id = Dogs.insert(dog);
+    Meteor.call("dog.insert", dog, function(error, result){
+      console.info("FINISHED INSERT");
+
+      console.log(result);
+      if(error){
+        console.log(error);
+      } else {
+        browserHistory.push('/dog/'+result);
+      }
+    });
   }
 
   renderCalendar(shows){
-    console.log(shows);
     if(shows.length < 1){
       return "No Upcoming Shows.";
     } else {
       return shows.map((show)=> {
-        console.error(show);
           return <ShowCalendarSidebar key={show._id} show={show} />;
         });
     }
@@ -119,7 +117,7 @@ export default class Home extends Component {
                     type="text"
                     ref="breed"
                     placeholder="The Breed of the Dog" />
-                  <select ref="gender" value="-">
+                  <select ref="gender">
                     <option value="Male">Male</option>
                     <option value="Fixed Male">Fixed Male</option>
                     <option value="Female">Female</option>
@@ -151,17 +149,25 @@ Home.defaultProps = {
 }
 
 export default createContainer(() => {
-  let ids = [];
+  Meteor.subscribe('shows')
+  Meteor.subscribe('dogs')
+  Meteor.subscribe('dogsImages')
+
+
+  const ids = [];
   const idsPre = Dogs.find({}, {fields:{_id:1}}).fetch();
   for (let id of idsPre) {
     ids.push(id._id);
   }
-  let imageIds = [];
+  Meteor.subscribe('ourShows', ids);
+
+
+  const imageIds = [];
   const imageIdsPre = Dogs.find({}, {fields:{image:1}}).fetch();
   for (let id of imageIdsPre) {
     imageIds.push(id.image);
   }
-  let imageStore = {};
+  const imageStore = {};
   console.log("IMAGE ID");
   for (file of DogImages.find({_id:{$in:imageIds}}).fetch()) {
     imageStore[file._id] = file;
@@ -193,7 +199,6 @@ export default createContainer(() => {
     }
   };
 
-  console.info(Shows.find(nearShowQuery).fetch());
 
   return {
     dogs: Dogs.find({}).fetch(),

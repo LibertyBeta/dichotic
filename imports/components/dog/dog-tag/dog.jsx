@@ -6,6 +6,7 @@ export default class Dog extends Component {
   constructor(props) {
     super(props);
     this.goDetails = this.goDetails.bind(this);
+    console.log(this.props.image);
   }
 
   goDetails(){

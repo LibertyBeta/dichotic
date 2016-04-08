@@ -21,7 +21,6 @@ export default class ShowCalendarPage extends Component{
     do {
       calendarDays.push(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
     } while (day.setDate(day.getDate() + 1) <= lastOftheMonth);
-    console.log(calendarDays);
 
     this.state = {
 
@@ -34,7 +33,6 @@ export default class ShowCalendarPage extends Component{
     return (
       <div id="internal" className="calendar">
         {this.state.calendar.map((cDate) => {
-          console.log(typeof cDate);
           if(typeof cDate !== "object"){
             return <div className="empty"></div>;
           } else if(typeof this.props.shows[cDate.getDate()] === "undefined"){
