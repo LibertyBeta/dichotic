@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Dogs, DogImages } from '../../api/dogs.jsx';
-import { Shows } from '../../api/shows.jsx';
+import { Dogs, DogImages } from '../../api/dogs.js';
+import { Shows } from '../../api/shows.js';
 import Dog from '../dog/dog-tag/dog.jsx';
 import ShowCalendarSidebar from '../show-calendar/show-calendar-sidebar.jsx';
 

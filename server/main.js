@@ -1,7 +1,8 @@
-import {Dogs} from '../imports/api/dogs.jsx';
-import '../imports/api/shows.jsx';
+import {Dogs} from '../imports/api/dogs.js';
+import '../imports/api/shows.js';
+import '../imports/api/weather.js';
 
-// 
+//
 // WebApp.connectHandlers.use("/hello", function(req, res, next) {
 //
 //     const test = Dogs.find({}).fetch();

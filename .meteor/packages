@@ -26,3 +26,4 @@ fortawesome:fontawesome
 cfs:standard-packages
 cfs:filesystem
 numtel:cfs-image-resize
+percolate:synced-cron

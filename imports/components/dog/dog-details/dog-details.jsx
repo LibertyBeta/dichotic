@@ -8,14 +8,15 @@ import ShowModal from '../../modal/show-modal.jsx';
 import RemoveModal from '../../modal/remove-modal.jsx';
 import ShowCalendarPage from '../../show-calendar/show-calendar-page.jsx';
 
-import { Dogs, DogImages } from "../../../api/dogs.jsx";
-import { Shows } from "../../../api/shows.jsx"
+import { Dogs, DogImages } from "../../../api/dogs.js";
+import { Shows } from "../../../api/shows.js"
 
 export default class DogDetails extends Component {
   constructor(props) {
     super(props);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.modalCase = this.modalCase.bind(this);
     this.modalShow = this.modalShow.bind(this);
     this.modalRemove = this.modalRemove.bind(this);
     this.modalMedical = this.modalMedical.bind(this);
@@ -106,9 +107,9 @@ export default class DogDetails extends Component {
                 {this.props.dog.name}
               </h1>
               <nav>
-                <button onClick={this.modalMedical}>add medical document</button>
-                <button onClick={this.modalShow}>add show</button>
-                <button onClick={this.modalRemove}>remove dog</button>
+                <button onClick={()=>this.modalCase(this.props.modals.medical)}>add medical document</button>
+                <button onClick={()=>this.modalCase(this.props.modals.show)}>add show</button>
+                <button onClick={()=>this.modalCase(this.props.modals.remove)}>remove dog</button>
               </nav>
             </div>
 

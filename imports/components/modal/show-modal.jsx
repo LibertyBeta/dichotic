@@ -3,14 +3,18 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import {Link} from 'react-router';
 
-import { Shows } from "../../api/shows.jsx"
+import { Shows } from "../../api/shows.js"
 
 // Task component - represents a single todo item
 export default class ShowModal extends Component{
   constructor(props) {
     super(props);
     this.addShow = this.addShow.bind(this);
-
+    this.addressChange = this.addressChange.bind(this);
+    this.setRealAddress = this.setRealAddress.bind(this);
+    this.state = {
+      addresses: []
+    };
   }
 
   addShow(event){
@@ -29,11 +33,40 @@ export default class ShowModal extends Component{
       if(error){
         console.error(error);
       } else {
-        modal.props.dismiss();
+        console.log(result);
+        // modal.props.dismiss();
       }
     });
 
 
+  }
+
+  addressChange(event){
+    console.log(event.target);
+    let modal = this;
+    Meteor.call("calendar.getAddreses", event.target.value, function(error, result) {
+      if(error){
+        console.error(error);
+      } else {
+        console.log(result);
+        const tempAddress = []
+        for(address of result){
+          tempAddress.push({key: address.place_id, formatted:address.formatted_address});
+        }
+        modal.setState({
+          addresses: tempAddress
+        });
+        console.log(modal.state.addresses);
+      }
+    });
+  }
+
+  setRealAddress(value){
+    console.log(value)
+    this.refs.location.value = value;
+    this.setState({
+      addresses: []
+    });
   }
 
   render() {
@@ -44,10 +77,16 @@ export default class ShowModal extends Component{
           <label htmlFor="event-name">Name of the Show</label>
           <input name="event-name" id="event-name" ref="title" type="text" placeholder="title"/>
           <label htmlFor="location">Location of the Show</label>
-          <input name="location" id="location" ref="location" type="text" placeholder="Location"/>
+          <input name="location" id="location" ref="location" type="text" placeholder="Location" onChange={this.addressChange}/>
+          <ul>
+
+          </ul>
           <label htmlFor="date">Date</label>
           <input id="date" name="date" ref="date" type="date" />
           <button type="submit">Create Event</button>
+          {this.state.addresses.map((possible)=>{
+            return <li onClick={()=>this.setRealAddress(possible.formatted)} value={possible.key} key={possible.key}> {possible.formatted}</li>
+          })}
         </form>
       </section>
     );
@@ -55,8 +94,11 @@ export default class ShowModal extends Component{
 };
 
 
-ShowCalendarSidebar = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
-  dog: React.PropTypes.object.isRequired
+
+ShowModal.defaultProps = {
+  dog: {},
+}
+
+ShowModal.propTypes = {
+  dog: React.PropTypes.object,
 }
