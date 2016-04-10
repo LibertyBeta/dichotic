@@ -15,6 +15,7 @@ export default class ShowModal extends Component{
 
   addShow(event){
     event.preventDefault();
+    let modal = this;
     const calendarEvent = {
       name: this.refs.title.value,
       location: this.refs.location.value,
@@ -28,10 +29,10 @@ export default class ShowModal extends Component{
       if(error){
         console.error(error);
       } else {
-
+        modal.props.dismiss();
       }
     });
-    this.props.dismiss();
+
 
   }
 
