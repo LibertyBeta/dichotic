@@ -28,9 +28,10 @@ export default class ShowModal extends Component{
       if(error){
         console.error(error);
       } else {
-        this.props.dismiss();
+
       }
-    })
+    });
+    this.props.dismiss();
 
   }
 

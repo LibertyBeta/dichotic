@@ -190,10 +190,10 @@ export default createContainer(({params}) => {
 
   const monthShows = {};
   for(show of shows){
-    if(typeof monthShows[show.date.getDate()] === 'undefined'){
-      monthShows[show.date.getDate()] = [];
+    if(typeof monthShows[show.date.getDate()+1] === 'undefined'){
+      monthShows[show.date.getDate()+1] = [];
     }
-    monthShows[show.date.getDate()].push(show);
+    monthShows[show.date.getDate()+1].push(show);
   }
 
 
