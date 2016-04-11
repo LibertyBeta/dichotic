@@ -64,9 +64,9 @@ Meteor.methods({
         //handle the error
       }else {
         console.info("<----------------------------------------------->");
-        console.info(result.data);
+        // console.info(result.data);
         const loc = result.data.results[0].geometry.location;
-        console.info(loc);
+        // console.info(loc);
         Shows.update(
           {_id:id},
           {
