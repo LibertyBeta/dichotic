@@ -191,11 +191,12 @@ export default createContainer(({params}) => {
 
   const monthShows = {};
   for(show of shows){
-    if(typeof monthShows[show.date.getDate()+1] === 'undefined'){
-      monthShows[show.date.getDate()+1] = [];
+    if(typeof monthShows[show.date.getUTCDate()] === 'undefined'){
+      monthShows[show.date.getUTCDate()] = [];
     }
-    monthShows[show.date.getDate()+1].push(show);
+    monthShows[show.date.getUTCDate()].push(show);
   }
+  console.log(monthShows);
 
 
   return {

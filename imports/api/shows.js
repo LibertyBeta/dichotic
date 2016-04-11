@@ -79,6 +79,20 @@ Meteor.methods({
         sevenDays.setDate(sevenDays.getDate() + 7);
         if( object.date < sevenDays ){
           //Throw this into the weather queing machine.
+          Shows.update(
+            {_id:id},
+            {
+              $set:{
+                weather:{
+                  summary: '',
+                  active: true,
+                  updated: false,
+                  icon: '',
+                  last: new Date(),
+                }
+              }
+            }
+          );
         }
 
       }
