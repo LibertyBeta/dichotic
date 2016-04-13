@@ -6,6 +6,7 @@ import App from '../../components/app/app.jsx';
 import Home from '../../components/home/home.jsx';
 import NotFoundPage from '../../components/NotFoundPage/NotFoundPage.jsx';
 import DogDetails from '../../components/dog/dog-details/dog-details.jsx';
+import ShowPage from '../../components/show/show.jsx';
 
 
 
@@ -16,7 +17,9 @@ export const renderRoutes = () => (
       <Route path="test" component={NotFoundPage} />
       <Route path="dog" component={DogDetails}>
         <Route path="/dog/:id" component={DogDetails} />
+
       </Route>
+      <Route path="/show/:showId" component={ShowPage} />
       <Route path="*" component={NotFoundPage} />
       {/* ... */}
     </Route>

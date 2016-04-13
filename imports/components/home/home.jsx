@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link} from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Dogs, DogImages } from '../../api/dogs.js';
 import { Shows } from '../../api/shows.js';
 import Dog from '../dog/dog-tag/dog.jsx';
 import ShowCalendarSidebar from '../show-calendar/show-calendar-sidebar.jsx';
+import ShowPage from '../show/show.jsx';
 
 
 
@@ -29,13 +30,22 @@ export default class Home extends Component {
     });
   }
 
+  renderUnratedShows(){
+    if(this.props.unreatedShows.length > 0){
+      return this.props.unreatedShows.map((show) => {
+        return(
+          <div className='unrated-show'>
+            How did you do at they {show.name} show? <Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>
+          </div>
+        )
+      });
+    }
+  }
+
   addDog(event){
     event.preventDefault();
-    console.log("none");
-    console.log(this.refs.image.files[0]);
     const file = DogImages.insert(this.refs.image.files[0]);
     // let file = DogImages.insert(this.refs.image.files[0]);
-    console.log(file);
 
     const dog = {
       image: file._id,
@@ -58,20 +68,18 @@ export default class Home extends Component {
     });
   }
 
-  renderCalendar(shows){
-    if(shows.length < 1){
-      return "No Upcoming Shows.";
-    } else {
-      return shows.map((show)=> {
-          return <ShowCalendarSidebar key={show._id} show={show} />;
-        });
-    }
-
-  }
-
+  // renderCalendar(shows){
+  //   if(shows.length < 1){
+  //     return "No Upcoming Shows.";
+  //   } else {
+  //     return shows.map((show)=> {
+  //         return <ShowCalendarSidebar key={show._id} show={show} />;
+  //       });
+  //   }
+  //
+  // }
 
   hideModal(){
-    console.log("trying to hide the modal");
     this.setState({
       modalHelperClass: 'hidden',
     });
@@ -84,9 +92,9 @@ export default class Home extends Component {
   }
 
   render() {
-    console.log(this.props.nearShows);
     return (
           <div className="content">
+
             <div className="dogs">
               {this.renderDogs()}
               <div id="add" onClick={this.showModal}>
@@ -94,10 +102,21 @@ export default class Home extends Component {
               </div>
             </div>
             <div className="sidebar">
+              {this.renderUnratedShows()}
               <h3>Next Seven Days</h3>
-              {this.renderCalendar(this.props.nearShows)}
+                <ShowCalendarSidebar
+                  params={{
+                    ids:this.props.dogIds,
+                    start:this.props.today,
+                    end:this.props.nearEnd
+                  }}></ShowCalendarSidebar>
               <h3>Next 15 days</h3>
-              {this.renderCalendar(this.props.farShows)}
+                <ShowCalendarSidebar
+                  params={{
+                    ids:this.props.dogIds,
+                    start:this.props.nearEnd,
+                    end:this.props.farEnd
+                  }}></ShowCalendarSidebar>
             </div>
             <div className={"modal "+ this.state.modalHelperClass}>
               <div className="modal-content">
@@ -145,10 +164,15 @@ Home.defaultProps = {
   dogs: [],
   nearShows: [],
   farShows: [],
+  unreatedShows: [],
+  today: new Date(),
+  nearEnd: new Date(),
+  farEnd: new Date(),
+  dogIds: []
 
 }
 
-export default createContainer(() => {
+export default createContainer(({params}) => {
   Meteor.subscribe('shows')
   Meteor.subscribe('dogs')
   Meteor.subscribe('dogsImages')
@@ -168,42 +192,45 @@ export default createContainer(() => {
     imageIds.push(id.image);
   }
   const imageStore = {};
-  console.log("IMAGE ID");
   for (file of DogImages.find({_id:{$in:imageIds}}).fetch()) {
     imageStore[file._id] = file;
   }
-  console.log(imageStore);
-
   const today = new Date();
-
   const farEnd = new Date();
   farEnd.setDate(today.getDate() + 20);
   const nearEnd = new Date();
   nearEnd.setDate(today.getDate() + 7);
+  today.setDate(today.getDate() - 1);
 
   const farShowQuery = {
     dog:
       {$in:ids},
-    date:{
-      $gte: nearEnd,
-      $lte: farEnd
-    }
+      $and:[ {date:{ $gt: nearEnd}} , {date:{ $lte: farEnd}}]
   };
 
   const nearShowQuery = {
+    dog:{$in:ids},
+    $and:[ {date:{ $gt: today}} , {date:{ $lte: nearEnd}}]
+  };
+
+  const pastQuery = {
     dog:
       {$in:ids},
     date:{
-      $gte: today,
-      $lt: nearEnd
-    }
+      $lt: today
+    },
+    rated: null
   };
-
+  // console.log(ids);
 
   return {
     dogs: Dogs.find({}).fetch(),
-    farShows: Shows.find(farShowQuery).fetch(),
-    nearShows: Shows.find(nearShowQuery).fetch(),
+    unreatedShows: Shows.find(pastQuery).fetch(),
     images: imageStore,
+    dogIds: ids,
+    today: today,
+    nearEnd: nearEnd,
+    farEnd: farEnd,
+    // aShow: showId,
   };
 }, Home);

@@ -1,0 +1,14 @@
+.modal{
+
+
+  &.show{
+    background-color: $background-color !important;
+    z-index: 1000;
+    #show-display{
+      width: 75vw;
+      height: 90vh;
+      box-shadow: $nintendo-shadow;
+      background-color: $background;
+    }
+  }
+}

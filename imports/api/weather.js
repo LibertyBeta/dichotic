@@ -7,6 +7,35 @@ import { Shows } from './shows.js';
 import request from 'request';
 const Keys = require('./keys.js');
 
+// const weatherKey = {
+//   'clear-day':"wi-day-sunny",
+//   'clear-night':"wi-night-cear",
+//   'rain':"wi-rain",
+//   'snow':"wi-snow",
+//   'sleet':"wi-sleet",
+//   'wind':"wi-strong-wind",
+//   'fog':"wi-fog",
+//   'cloudy':"wi-cloudy",
+//   'partly-cloudy-day':"wi-day-cloudy",
+//   'partly-cloudy-night':"wi-night-alt-cloud",
+// };
+
+const weatherKey = {
+  'clear-day': "wi-forecast-io-clear-day",
+  'clear-night': "wi-forecast-io-clear-night",
+  'rain': "wi-forecast-io-rain",
+  'snow': "wi-forecast-io-snow",
+  'sleet': "wi-forecast-io-sleet",
+  'strong-wind': "wi-forecast-io-wind",
+  'fog': "wi-forecast-io-fog",
+  'cloudy': "wi-forecast-io-cloudy",
+  'partly-cloudy-night': "wi-forecast-io-partly-cloudy-day",
+  'partly-cloudy-day': "wi-forecast-io-partly-cloudy-night",
+  'hail': "wi-forecast-io-hail",
+  'thunderstorm': "wi-forecast-io-thunderstorm",
+  'tornado': "wi-forecast-io-tornado",
+};
+
 if (Meteor.isServer) {
   SyncedCron.start();
   console.log(SyncedCron.nextScheduledAtDate('weatherUpdater'));
@@ -32,10 +61,7 @@ if (Meteor.isServer) {
       const sevenDays = new Date();
       sevenDays.setDate(sevenDays.getDate() + 7);
       const query = {
-        date:{
-          $gte: today,
-          $lte: sevenDays
-        }
+        $and:[ {date:{ $gt: today}} , {date:{ $lte: sevenDays}}]
       };
       console.log(query);
       const toUpdate = Shows.find({date:{$lte: sevenDays}}).fetch();
@@ -88,7 +114,7 @@ if (Meteor.isServer) {
               $set:{
                 "weather.active": true,
                 "weather.summary": hourly.summary,
-                "weather.icon": hourly.icon,
+                "weather.icon": weatherKey[hourly.icon],
                 "weather.hourly": hourly.data,
                 "weather.last":new Date()
               }

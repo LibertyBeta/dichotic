@@ -2,14 +2,14 @@
   .sidebar{
     // background-color: green;
     order:3;
-    flex: 1 auto;
+    flex: 6;
   }
 
   .dogs{
     // padding-top: 9rem;
     // background-color: brown;
     order: 2;
-    flex: 8 0px;
+    flex: 10;
     display: flex;
     flex-flow: row wrap;
     // justify-content: space-between;
@@ -30,31 +30,5 @@
   .add{
     background: white;
 
-  }
-}
-
-
-.modal{
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-around;
-  background-color: rgba(gray, 0.7);
-  left: 0;
-  right: 0;
-  top: 0;
-  border-bottom: 0;
-  position: absolute;
-  &.hidden{
-    display:none;
-  }
-  .modal-content{
-    background-color: $background;
-    padding: 0.5rem;
-    form{
-
-    }
   }
 }

@@ -87,7 +87,7 @@ Meteor.methods({
                   summary: '',
                   active: true,
                   updated: false,
-                  icon: '',
+                  icon: 'wi-cloud-refresh',
                   last: new Date(),
                 }
               }

@@ -158,6 +158,7 @@ DogDetails.propTypes = {
 export default createContainer(({params}) => {
   let dogImageId ='';
   let test = "FART";
+  const showId = params.showId;
   Meteor.subscribe("dog", params.id);
   Meteor.subscribe("aDogsShow",params.id);
 
@@ -203,5 +204,6 @@ export default createContainer(({params}) => {
     dog: Dogs.findOne(dogQuery),
     shows: monthShows,
     image: DogImages.findOne({_id:imageId.image}),
+    showId: showId,
   };
 }, DogDetails);

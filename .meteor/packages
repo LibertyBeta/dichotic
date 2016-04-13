@@ -27,4 +27,5 @@ cfs:standard-packages
 cfs:filesystem
 numtel:cfs-image-resize
 percolate:synced-cron
-russ:weather-icons
+#russ:weather-icons
+tmeasday:check-npm-versions

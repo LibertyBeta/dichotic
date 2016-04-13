@@ -28,6 +28,16 @@ export default class ShowCalendarPage extends Component{
     };
   }
 
+  iconify(args){
+    // console.log(this.props);
+    // if(this.props.weather){
+      // return <i className="wi wi-"+ this.props.weather.icon></i>
+      return "wi " + args;
+    // } else{
+      // return "";
+    // }
+  }
+
 
   render() {
     return (
@@ -36,12 +46,16 @@ export default class ShowCalendarPage extends Component{
           if(typeof cDate !== "object"){
             return <div className="empty"></div>;
           } else if(typeof this.props.shows[cDate.getDate()] === "undefined"){
-            return <div className="empty"><span className="date">{cDate.getDate()}</span></div>;
+            return <div className="empty"><div className="date">{cDate.getDate()}</div></div>;
           } else {
             return <div className="show">
-                    <span className="date">{cDate.getDate()}</span>
+                    <div className="date">{cDate.getDate()}</div>
                     {this.props.shows[cDate.getDate()].map((show)=>{
-                      return <span id={show._id} className="show"> {show.name}</span>;
+                      return  (
+                        <div id={show._id} className="show">
+                          {show.name}
+                        </div>
+                      );
                     })}
                     </div>;
           }

@@ -1,18 +1,33 @@
 .sidebar{
   overflow-y: auto;
-  .calendar{
+  .unrated-show, .calendar{
+
     color:black;
     // flex: 1;
-    padding: 0.2rem;
+    padding: 0.4rem;
     margin: 0.5rem;
     // flex-basis: 10rem;
     min-width: 10rem;
     background-color: $calendar-color;
     border-radius: 1px;
     // border: solid 1px black;
-    text-align: center;
+    // text-align: center;
     box-shadow: $nintendo-shadow;
+    display: flex;
+    flex-flow: row wrap;
+    .date{
+      flex: 3;
+    }
+    .weather{
+      // width: 10px;
+    }
+    .name, .location{
+      flex: 0 0 100%;
+    }
 
+  }
+  .unrated-show{
+    background-color: $alert;
   }
 }
 
@@ -31,8 +46,13 @@
     min-width: 100%;
     min-height: 2rem;
     box-shadow: 0px 0px 0px 1px gray;
-    span{
+
+    div{
       width: 100%;
+      &.date{
+        text-align: right;
+        background: transparentize(blue, .9);;
+      }
     }
 
 
@@ -42,14 +62,27 @@
       flex-wrap: wrap;
       min-height: 100%;
       div {
-        flex-basis: calc(100% / 7);
+        flex-basis: calc(100% / 7.5);
         align-items: flex-start;
-        justify-content: flex-end;
-        padding: 15px 15px 0 0;
+        justify-content: flex-start;
+        padding: 2px 2px 0 2px;
         min-width: 0;
-        min-height: 20%;
-        span{
+        min-height: 5rem;
+        margin: 2px;
+        flex-flow: column wrap;
+        div{
+          margin: 0;
+          // height: 10px;
+          min-height: 20px;
+          box-shadow: none;
+
           width: 100%;
+          font-size: 8pt;
+          &.date{
+            display: block;
+            font-size:12pt;
+            text-align: right;
+          }
         }
     }
 

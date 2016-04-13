@@ -27,6 +27,7 @@ export default class ShowModal extends Component{
       dog: this.props.dog._id,
       judge: "TBA",
       weather: "TBA",
+      rated: null,
       // color: this.refs.color.value
     };
     Meteor.call("calendar.insert", calendarEvent, function(error, result) {
