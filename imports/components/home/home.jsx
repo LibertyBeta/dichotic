@@ -34,7 +34,7 @@ export default class Home extends Component {
     if(this.props.unreatedShows.length > 0){
       return this.props.unreatedShows.map((show) => {
         return(
-          <div className='unrated-show'>
+          <div className='unrated-show' key={show._id}>
             How did you do at they {show.name} show? <Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>
           </div>
         )
@@ -109,7 +109,7 @@ export default class Home extends Component {
                     ids:this.props.dogIds,
                     start:this.props.today,
                     end:this.props.nearEnd
-                  }}></ShowCalendarSidebar>
+                  }} shows={this.props.unreatedShows}></ShowCalendarSidebar>
               <h3>Next 15 days</h3>
                 <ShowCalendarSidebar
                   params={{
@@ -202,17 +202,7 @@ export default createContainer(({params}) => {
   nearEnd.setDate(today.getDate() + 7);
   today.setDate(today.getDate() - 1);
 
-  const farShowQuery = {
-    dog:
-      {$in:ids},
-      $and:[ {date:{ $gt: nearEnd}} , {date:{ $lte: farEnd}}]
-  };
-
-  const nearShowQuery = {
-    dog:{$in:ids},
-    $and:[ {date:{ $gt: today}} , {date:{ $lte: nearEnd}}]
-  };
-
+  
   const pastQuery = {
     dog:
       {$in:ids},

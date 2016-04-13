@@ -7,43 +7,66 @@ import { Shows } from '../../api/shows.js';
 export default class ShowCalendarSidebar extends Component{
   constructor(props) {
     super(props);
-    // this.iconify = this.iconify.bind(this);
-    //
-    // // this.state{
-    // //   class: "wi wi-" +this.props.weather.icon;
-    // // }
+    this.iconify = this.iconify.bind(this);
+
 
   }
 
+  iconify(preIcon){
+    // console.log(this.props);
+    // if(this.props.weather){
+      // return <i className="wi wi-"+ this.props.weather.icon></i>
+      return "wi " + preIcon;
+    // } else{
+      // return "";
+    // }
+  }
 
   render() {
     return (
       <section>
-        test
+        {(() => {
+          if(this.props.shows.lenght < 1) {
+            return "No upcoming shows";
+          }
+
+        })()}
+        {this.props.shows.map((show)=>{
+        return (
+          <div className="calendar" key={show._id}>
+            <div className="date">{show.date.getFullYear()} - {show.date.getMonth() + 1} - {show.date.getUTCDate()}</div>
+            <div className="weather"><i className={this.iconify(show.weather.icon)}></i></div>
+            <div className="name">{show.name}</div>
+            <div className="location">{show.location}</div>
+          </div>
+        )
+        })}
       </section>
     );
   }
 };
 
 
-ShowCalendarSidebar = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
-}
-
 ShowCalendarSidebar.defaultProps = {
-  shows: [],
+  show: {
+    weather:{
+      icon: "wi-cloud-refresh"
+    }
+  },
+  shows: []
 }
-
-ShowCalendarSidebar.proptypes = {
-  shows: React.PropTypes.array,
-}
-
 
 export default createContainer(({params}) => {
-  // Meteor.subscribe('shows');
-  const shows = [];
+  Meteor.subscribe('shows')
+
+
+  const query = {
+    dog:{$in:params.ids},
+    $and:[ {date:{ $gt: params.start}} , {date:{ $lte: params.end}}]
+  };
+  console.log(Shows.find(query).fetch());
+
   return {
-    shows,
+    shows: Shows.find(query).fetch(),
   };
 }, ShowCalendarSidebar);
