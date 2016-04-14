@@ -116,6 +116,9 @@ export default class ShowPage extends Component {
     }
   }
 
+  mapUrl(){
+    document.getElementById('map-image').src="/images/no-thumb.png";
+  }
 
 
   render() {
@@ -124,7 +127,7 @@ export default class ShowPage extends Component {
             <div id="show-display">
               <div id="title">
                 <div id="map">
-                  <img src={this.props.show.mapUrl}></img>
+                  <img id="map-image" src={this.props.show.mapUrl} onError={()=>this.mapUrl()}></img>
                 </div>
                 <div id="tags">
                   <h1>{this.props.show.name}</h1>
