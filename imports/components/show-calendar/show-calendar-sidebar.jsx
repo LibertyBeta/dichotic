@@ -43,6 +43,13 @@ export default class ShowCalendarSidebar extends Component{
           </div>
         )
         })}
+        {(() => {
+          console.log(this.props.shows.length);
+          if(this.props.shows[0].weather.icon != "wi-cloud-refresh") {
+            return <h5>Weathe from Forecast.io</h5>;
+          }
+
+        })()}
       </section>
     );
   }

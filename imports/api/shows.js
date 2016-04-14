@@ -38,11 +38,11 @@ if (Meteor.isServer) {
       this.unblock();
       try{
         const response = HTTP.get("https://maps.googleapis.com/maps/api/geocode/json?address="+address.replace(" ", "+")+"&key="+Keys.google, {});
-        console.log(response);
+        // console.log(response);
         return response.data.results;
       }
       catch(e){
-        console.info(e);
+        // console.info(e);
         throw new Meteor.Error( 500, e.toString());
       }
     },
@@ -50,7 +50,7 @@ if (Meteor.isServer) {
       this.unblock();
       console.log("STARTING MAP");
       const thisShow = Shows.findOne({_id:id});
-      console.log(thisShow);
+      // console.log(thisShow);
       // if(thisShow.geometry)
       try{
         const uriArgs = {
@@ -86,7 +86,7 @@ Meteor.methods({
   'calendar.insert'(object) {
     console.log(object);
     console.log("running insert");
-    console.log("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key="+Keys.google);
+    // console.log("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key="+Keys.google);
 
     const uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+object.location.replace(" ", "+")+"&key="+Keys.google;
 

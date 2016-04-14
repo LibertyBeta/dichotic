@@ -120,7 +120,7 @@ export default class ShowPage extends Component {
 
   render() {
     return (
-          <div className="modal show">
+          <div className="wrapper show">
             <div id="show-display">
               <div id="title">
                 <div id="map">
@@ -129,6 +129,7 @@ export default class ShowPage extends Component {
                 <div id="tags">
                   <h1>{this.props.show.name}</h1>
                   <h3>{this.props.show.location}</h3>
+                  <h4>{this.props.show.weather.summary}</h4>
                 </div>
               </div>
               <div id="dog">

@@ -104,7 +104,7 @@ if (Meteor.isServer) {
       console.log(uri);
       HTTP.get(uri, function(error, response){
         if(error && response.statusCode !== 200){
-
+          console.log(error);
         } else {
           const hourly = response.data.hourly;
           Shows.update(

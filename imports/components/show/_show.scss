@@ -1,13 +1,18 @@
-.modal{
+.wrapper{
 
 
-  &.show{
-    background-color: $background-color !important;
+  &.show{  display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: space-around;
+    flex: 1;
+    background-color: $background-color;
     z-index: 1000;
     #show-display{
       width: 75vw;
       height: 90vh;
       min-height: 25rem;
+      min-width: 30rem;
       display: flex;
       flex-flow: column wrap;
       align-items: flex-start;
@@ -40,6 +45,15 @@
         #tags{
           h1{
             margin-top: 10px;
+            margin-bottom: 0;
+          }
+          h3{
+            margin-top: 0;
+            margin-bottom: 0;
+          }
+          h4{
+            margin-top: 0;
+            margin-bottom: 0;
           }
         }
       }
