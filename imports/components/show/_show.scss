@@ -7,8 +7,176 @@
     #show-display{
       width: 75vw;
       height: 90vh;
+      min-height: 25rem;
+      display: flex;
+      flex-flow: column wrap;
+      align-items: flex-start;
       box-shadow: $nintendo-shadow;
       background-color: $background;
+      #title{
+        // padding-top: 1rem;
+        height: 6rem;
+        // padding-left: 1rem;
+        display: flex;
+        background-color: rgba(#F0EDE5, 0.5);
+        margin-bottom: 5px;
+        width: 100%;
+        #map{
+          // background: blue;
+          // overflow: hidden;
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-start;
+          img{
+            // border-radius: 5px;
+            border-radius: 5px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0 0.5rem 0.5rem 0;
+            width: 6rem;
+            height: 6rem;
+          }
+        }
+        #tags{
+          h1{
+            margin-top: 10px;
+          }
+        }
+      }
+      #score{
+        height: 4rem;
+        width: 100%;
+        display: flex;
+        .cheer, .final-score{
+          font-size: 24pt;
+          color: darken($tag, 10);
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-around;
+          background-color: lighten($tag, 10);
+          margin: 0.5rem;
+          border-radius: 5px;
+          box-shadow: 0px 0px 0px 1px $tag;
+        }
+        .score-form{
+          padding: 0.5rem;
+          font-size: 14pt;
+          color: darken($score, 40);
+          display: flex;
+          width: 100%;
+          align-items: center;
+          // justify-content: space-around;
+          background-color: lighten($score, 10);
+          margin: 0.5rem;
+          border-radius: 5px;
+          box-shadow: 0px 0px 0px 1px $score;
+          select{
+            // background: transparent;
+            border-radius: 5px;
+            box-shadow: 0px 0px 0px 1px $score;
+            //  width: 268px;
+             padding: 5px;
+             font-size: 14px;
+             line-height: 1;
+             border: 0;
+            //  border-radius: 0;
+            //  height: 34px;
+             -webkit-appearance: none;
+          }
+        }
+      }
+      #dog{
+        height: 4rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .thumb-image{
+          // background-color: black;
+          display: flex;
+          // width: 100%;
+          margin: 10px;
+          align-items: center;
+          justify-content: space-around;
+          img{
+
+            margin-top: 5px;
+            // background-color: $border-shade;
+            box-shadow: 0 0px 1px 3px $border-shade;
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+          }
+
+        }
+      }
+      #bottom{
+        flex: 1;
+        width: 100%;
+        // border-top: 1px solid $tag;
+        // height: 8rem;
+        display: flex;
+        // flex-flow: column;
+        #judges{
+          // padding-top: 1rem;
+          flex: 2;
+          // background: red;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          .error{
+            color:black;
+            // flex: 1;
+            padding: 0.2rem;
+            margin: 0.5rem;
+            // flex-basis: 10rem;
+            width: 10rem;
+            background-color: white;
+            border-radius: 5px;
+            // border: solid 1px black;
+            text-align: center;
+            box-shadow:$nintendo-shadow;
+          }
+        }
+        #weather{
+          overflow: auto;
+          padding: 0.5rem;
+          flex: 1;
+          // background: red;
+          // box-shadow: 0px 0px 1px 0.5px gray;
+          .hour{
+            padding: 6px;
+            margin: 5px;
+            display: flex;
+            // box-shadow: 0px 0px 0px 0.5px gray;
+            border-left: 5px solid transparentize($tag, .1);;
+            border-top:  0.5px solid transparentize($tag, .1);;
+            border-bottom:  0.5px solid transparentize($tag, .1);;
+            border-right: 0.5px solid transparentize($tag, .1);;
+            height: 4rem;
+            background-color: lighten($tag, 5);
+            .icon{
+              padding-right: 0.5rem;
+              // padding: 5px;
+              // flex: 1;
+              display: flex;
+              flex-flow: column;
+              justify-content: center;
+              text-align: center;
+              i{
+                font-size: 2rem;
+                width: 100%
+              }
+            }
+          }
+          .details{
+            display: flex;
+            justify-content: space-around;
+            align-items:center;
+          }
+        }
+
+      }
     }
   }
 }

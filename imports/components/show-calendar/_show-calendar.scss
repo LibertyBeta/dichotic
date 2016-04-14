@@ -21,8 +21,17 @@
     .weather{
       // width: 10px;
     }
-    .name, .location{
+    .name{
       flex: 0 0 100%;
+    }
+    .location{
+      flex: 3
+    }
+    .message{
+      flex: 3;
+    }
+    .link{
+      padding-right: 5px;
     }
 
   }

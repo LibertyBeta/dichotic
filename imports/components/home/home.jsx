@@ -35,7 +35,12 @@ export default class Home extends Component {
       return this.props.unreatedShows.map((show) => {
         return(
           <div className='unrated-show' key={show._id}>
-            How did you do at they {show.name} show? <Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>
+            <div className='message'>
+              How did you do at they {show.name} show?
+            </div>
+            <div className="link">
+              <Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>
+            </div>
           </div>
         )
       });
@@ -52,7 +57,7 @@ export default class Home extends Component {
       name: this.refs.name.value,
       breed: this.refs.breed.value,
       gender: this.refs.gender.value,
-      // color: this.refs.color.value
+      color: this.refs.color.value
     };
     // console.log(dog);
     // const id = Dogs.insert(dog);
@@ -144,8 +149,8 @@ export default class Home extends Component {
                   </select>
                   <input
                     type="text"
-                    ref="breed"
-                    placeholder="The Breed of the Dog" />
+                    ref="color"
+                    placeholder="Color of the Dog" />
                   <input type="submit"></input>
                 </form>
               </div>
@@ -202,14 +207,14 @@ export default createContainer(({params}) => {
   nearEnd.setDate(today.getDate() + 7);
   today.setDate(today.getDate() - 1);
 
-  
+
   const pastQuery = {
     dog:
       {$in:ids},
     date:{
       $lt: today
     },
-    rated: null
+    score: null
   };
   // console.log(ids);
 

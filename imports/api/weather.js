@@ -45,7 +45,7 @@ if (Meteor.isServer) {
       name: 'weatherUpdater',
       schedule: function(parser) {
         // parser is a later.parse object
-        return parser.text('every 30 minutes');
+        return parser.text('every 1 minute');
       },
       job: function() {
         var weatherFetched = Meteor.call("weather.start");
@@ -87,6 +87,7 @@ if (Meteor.isServer) {
 
     'weather.check'(show){
       console.log(show);
+      if(!show.gps) return false;
       function pad(number) {
         if (number < 10) {
           return '0' + number;

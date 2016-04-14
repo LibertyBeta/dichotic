@@ -16,7 +16,7 @@ export default class DogDetails extends Component {
     super(props);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
-    this.modalCase = this.modalCase.bind(this);
+    // this.modalCase = this.modalCase.bind(this);
     this.modalShow = this.modalShow.bind(this);
     this.modalRemove = this.modalRemove.bind(this);
     this.modalMedical = this.modalMedical.bind(this);
@@ -57,6 +57,8 @@ export default class DogDetails extends Component {
   }
 
   modalCase(typeOfModal){
+    console.log("clicking");
+    console.log(typeOfModal);
     this.setState({
       modal: typeOfModal,
       modalHelperClass: '',
@@ -92,13 +94,17 @@ export default class DogDetails extends Component {
     }
   }
 
-  renderShows(){
-    return
-  }
+
 
   render() {
     return (
           <div className="content dog">
+            <div className={"modal "+ this.state.modalHelperClass}>
+              <div className="modal-content">
+                <button onClick={this.hideModal}>X</button>
+                {this.renderModal()}
+              </div>
+            </div>
             <div className="bar" style={this.state.style}>
               <div className="thumb-image">
                 <img src={this.props.image.url({store:'thumbs'})}></img>
@@ -121,13 +127,8 @@ export default class DogDetails extends Component {
                 Gender: {this.props.dog.gender}
               </div>
             </div>
-            <ShowCalendarPage shows={this.props.shows} />;
-            <div className={"modal "+ this.state.modalHelperClass}>
-              <div className="modal-content">
-                <button onClick={this.hideModal}>X</button>
-                {this.renderModal()}
-              </div>
-            </div>
+            <ShowCalendarPage shows={this.props.shows} />
+
           </div>
 
     );

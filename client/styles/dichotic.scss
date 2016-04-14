@@ -68,13 +68,20 @@ body{
       box-shadow: $nintendo-shadow;
       background-color: $background;
       padding: 0.5rem;
+      width: 25vw;
       form{
-
+        input, select{
+          width: 100%;
+        }
+      }
+      ul{
+        list-style: none;
+        padding-left: 0;
       }
     }
   }
 
-  button{
+  button, input[type="submit"]{
     background: none;
     background-color: rgba(gray, 0.5);
     // border: 1px solid rgba(gray, 0.5);

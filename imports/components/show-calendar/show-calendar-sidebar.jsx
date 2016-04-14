@@ -26,7 +26,8 @@ export default class ShowCalendarSidebar extends Component{
     return (
       <section>
         {(() => {
-          if(this.props.shows.lenght < 1) {
+          console.log(this.props.shows.length);
+          if(this.props.shows.length < 1) {
             return "No upcoming shows";
           }
 
@@ -34,10 +35,11 @@ export default class ShowCalendarSidebar extends Component{
         {this.props.shows.map((show)=>{
         return (
           <div className="calendar" key={show._id}>
-            <div className="date">{show.date.getFullYear()} - {show.date.getMonth() + 1} - {show.date.getUTCDate()}</div>
+            <div className="date">{show.date.getFullYear()}-{show.date.getMonth() + 1}-{show.date.getUTCDate()}</div>
             <div className="weather"><i className={this.iconify(show.weather.icon)}></i></div>
             <div className="name">{show.name}</div>
             <div className="location">{show.location}</div>
+            <div className="link"><Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link></div>
           </div>
         )
         })}
@@ -67,6 +69,6 @@ export default createContainer(({params}) => {
   console.log(Shows.find(query).fetch());
 
   return {
-    shows: Shows.find(query).fetch(),
+    shows: Shows.find(query,{sort: {date: 1}}).fetch(),
   };
 }, ShowCalendarSidebar);

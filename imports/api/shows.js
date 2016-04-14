@@ -18,6 +18,11 @@ if (Meteor.isServer) {
     return Shows.find({dog:{$in:dogIds}});
   });
 
+  Meteor.publish('show', function showPublication(id) {
+    console.log("Subscribing for Show " + id);
+    return Shows.find({_id:id});
+  });
+
   Meteor.publish('shows', function showsPublication() {
     return Shows.find();
   });
@@ -40,6 +45,31 @@ if (Meteor.isServer) {
         console.info(e);
         throw new Meteor.Error( 500, e.toString());
       }
+    },
+    'calendar.map'(id){
+      this.unblock();
+      console.log("STARTING MAP");
+      const thisShow = Shows.findOne({_id:id});
+      console.log(thisShow);
+      // if(thisShow.geometry)
+      try{
+        const uriArgs = {
+          key: Keys.google,
+          center: thisShow.gps.lat+","+thisShow.gps.lat,
+          size: 500+"x"+500,
+          maptype: 'roadmap',
+
+        };
+
+        const uri = "https://maps.googleapis.com/maps/api/staticmap?";
+        const response = HTTP.get(uri, {params:uriArgs});
+        console.log(response);
+        return response.data.results;
+      }
+      catch(e){
+        console.info(e);
+        throw new Meteor.Error( 500, e.toString());
+      }
     }
   })
 
@@ -47,6 +77,12 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
+  'calendar.score'(id, result) {
+    Shows.update({_id:id},
+    {$set:{
+      score: result
+    }});
+  },
   'calendar.insert'(object) {
     console.log(object);
     console.log("running insert");
@@ -67,11 +103,26 @@ Meteor.methods({
         // console.info(result.data);
         const loc = result.data.results[0].geometry.location;
         // console.info(loc);
+        const uriArgs = {
+          key: Keys.googleClient,
+          center: loc.lat+","+loc.lng,
+          size: 500+"x"+500,
+          maptype: 'roadmap',
+        };
+
+        const staticUri = "https://maps.googleapis.com/maps/api/staticmap?"+
+          "key="+Keys.googleClient +
+          "&center="+loc.lat +","+loc.lng +
+          "&size=500x500"+
+          "&type=roadmap" +
+          "&zoom=15";
+        console.log(staticUri);
         Shows.update(
           {_id:id},
           {
             $set:{
-              gps:result.data.results[0].geometry.location
+              gps:result.data.results[0].geometry.location,
+              mapUrl: staticUri
             }
           }
         );

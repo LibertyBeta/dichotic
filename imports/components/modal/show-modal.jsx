@@ -27,7 +27,7 @@ export default class ShowModal extends Component{
       dog: this.props.dog._id,
       judge: "TBA",
       weather: "TBA",
-      rated: null,
+      score: null,
       // color: this.refs.color.value
     };
     Meteor.call("calendar.insert", calendarEvent, function(error, result) {
@@ -35,7 +35,7 @@ export default class ShowModal extends Component{
         console.error(error);
       } else {
         console.log(result);
-        // modal.props.dismiss();
+        modal.props.dismiss();
       }
     });
 
@@ -70,24 +70,31 @@ export default class ShowModal extends Component{
     });
   }
 
+  hideSuggestions(){
+    // alert("HIdding");
+    this.setState({
+      addresses: []
+    });
+  }
+
   render() {
     return (
       <section>
         <form onSubmit={this.addShow}>
           <h3>Add a Show for this Dog</h3>
           <label htmlFor="event-name">Name of the Show</label>
-          <input name="event-name" id="event-name" ref="title" type="text" placeholder="title"/>
+          <input name="event-name" id="event-name" ref="title" type="text" placeholder="title" onFocus={()=>this.hideSuggestions()}/>
           <label htmlFor="location">Location of the Show</label>
-          <input name="location" id="location" ref="location" type="text" placeholder="Location" onChange={this.addressChange}/>
+          <input name="location" id="location" ref="location" type="text" placeholder="Location" onChange={this.addressChange} onFocus={this.addressChange}/>
           <ul>
-
+            {this.state.addresses.map((possible)=>{
+              return <li onClick={()=>this.setRealAddress(possible.formatted)} value={possible.key} key={possible.key}> {possible.formatted}</li>
+            })}
           </ul>
           <label htmlFor="date">Date</label>
-          <input id="date" name="date" ref="date" type="date" />
+          <input id="date" name="date" ref="date" type="date" onFocus={()=>this.hideSuggestions()}/>
           <button type="submit">Create Event</button>
-          {this.state.addresses.map((possible)=>{
-            return <li onClick={()=>this.setRealAddress(possible.formatted)} value={possible.key} key={possible.key}> {possible.formatted}</li>
-          })}
+
         </form>
       </section>
     );
