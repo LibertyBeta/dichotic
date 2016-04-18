@@ -121,9 +121,9 @@ export default class DogDetails extends Component {
 
             <div className="specs">
               <div className="biological">
-                Name: {this.props.dog.name}
-                Breed: {this.props.dog.breed}
-                Color: {this.props.dog.color}
+                Name: {this.props.dog.name}<br/>
+                Breed: {this.props.dog.breed}<br/>
+                Color: {this.props.dog.color}<br/>
                 Gender: {this.props.dog.gender}
               </div>
             </div>

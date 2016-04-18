@@ -36,7 +36,7 @@ export default class Home extends Component {
         return(
           <div className='unrated-show' key={show._id}>
             <div className='message'>
-              How did you do at they {show.name} show?
+              How did you do at the {show.name} show?
             </div>
             <div className="link">
               <Link to={`/show/${show._id}`}><i className="fa fa-arrow-circle-o-right"></i></Link>

@@ -70,4 +70,10 @@
   flex-flow: row wrap !important;
   align-items: flex-start;
   align-content: flex-start;
+  .specs{
+    .biological{
+      padding-left: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
 }
