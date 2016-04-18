@@ -1,0 +1,36 @@
+.content{
+  .judges{
+    // padding-top: 9rem;
+    // background-color: brown;
+    order: 2;
+    flex: 10;
+    display: flex;
+    flex-flow: row wrap;
+    // justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow-y: auto;
+    #add{
+      background: pink;
+      // flex: 1;
+      @include tag-sizing();
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-content: space-around;
+    }
+    .judge{
+      color:black;
+      // flex: 1;
+      padding: 0.2rem;
+      margin: 0.5rem;
+      // flex-basis: 10rem;
+      width: 10rem;
+      background-color: white;
+      border-radius: 5px;
+      // border: solid 1px black;
+      text-align: center;
+      box-shadow:$nintendo-shadow;
+    }
+  }
+}
