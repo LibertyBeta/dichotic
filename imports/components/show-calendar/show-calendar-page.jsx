@@ -53,7 +53,7 @@ export default class ShowCalendarPage extends Component{
                     {this.props.shows[cDate.getDate()].map((show)=>{
                       return  (
                         <div id={show._id} className="show">
-                          {show.name}
+                          <Link to={`/show/${show._id}`}>{show.name}</Link>
                         </div>
                       );
                     })}

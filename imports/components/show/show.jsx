@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router';
 import { Dogs, DogImages } from "../../api/dogs.js";
 import { Shows } from "../../api/shows.js"
+import JudgeGrid from "../judge/judge-grid.jsx"
 
 const weatherKey = {
   'clear-day': "wi-forecast-io-clear-day",
@@ -29,7 +30,6 @@ export default class ShowPage extends Component {
   }
 
   setScore(event){
-    console.log(event);
     event.preventDefault();
     Meteor.call("calendar.score", this.props.show._id, this.refs.result.value);
   }
@@ -87,8 +87,6 @@ export default class ShowPage extends Component {
       }
 
     } else if (!this.props.show.score && this.props.show.date < today) {
-      console.log(this.props.show.date);
-      console.log(today);
       return(
         <div className="score-form">
           <form onSubmit={this.setScore}>
@@ -148,9 +146,7 @@ export default class ShowPage extends Component {
               </div>
               <div id="bottom">
                 <div id="judges">
-                  <div className="error">
-                    No Judges found.
-                  </div>
+                  <JudgeGrid params={{ids:this.props.show.judges, "showId":this.props.show._id}} ></JudgeGrid>
                 </div>
                 <div id="weather">
                   {this.renderWeather()}
@@ -207,7 +203,7 @@ export default createContainer(({params}) => {
     }
     console.log("Dog LOADED");
   }
-  console.log(images);
+
 
 
   console.log(show);

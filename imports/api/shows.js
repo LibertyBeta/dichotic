@@ -83,6 +83,15 @@ Meteor.methods({
       score: result
     }});
   },
+  'calendar.addJudge'(showId,id) {
+    console.log("Updating show " + showId + " with judge " + id);
+    return Shows.update(
+      {_id:showId},
+      {$addToSet:
+        {judges:id}
+      }
+    );
+  },
   'calendar.insert'(object) {
     console.log(object);
     console.log("running insert");

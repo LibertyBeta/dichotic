@@ -45,7 +45,7 @@ if (Meteor.isServer) {
       name: 'weatherUpdater',
       schedule: function(parser) {
         // parser is a later.parse object
-        return parser.text('every 15 seconds');
+        return parser.text('every 1 hour');
       },
       job: function() {
         var weatherFetched = Meteor.call("weather.start");

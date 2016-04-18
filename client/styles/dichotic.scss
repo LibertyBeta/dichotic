@@ -7,6 +7,7 @@
 @import '../../imports/components/home/_home.scss';
 @import '../../imports/components/dog/_dog.scss';
 @import '../../imports/components/show/_show.scss';
+@import '../../imports/components/judge/_judge.scss';
 
 html, body {
   height: 100%;
@@ -62,6 +63,7 @@ body{
     border-bottom: 0;
     position: absolute;
     right: 0;
+    top: 0;
     left: 2rem;
     &.hidden{
       display:none;

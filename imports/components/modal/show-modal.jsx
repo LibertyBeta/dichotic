@@ -28,6 +28,7 @@ export default class ShowModal extends Component{
       judge: "TBA",
       weather: "TBA",
       score: null,
+      judges: [],
       // color: this.refs.color.value
     };
     Meteor.call("calendar.insert", calendarEvent, function(error, result) {

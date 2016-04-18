@@ -138,6 +138,9 @@
           display: flex;
           align-items: center;
           justify-content: space-around;
+          .content{
+            background: transparent;
+          }
           .error{
             color:black;
             // flex: 1;
