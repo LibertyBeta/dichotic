@@ -25,7 +25,8 @@ export default class JudgeDetail extends Component {
     return (
           <div className="sidebar">
 
-            JUDGE details!!!!
+            {this.props.judge.name}<br></br>
+          {this.props.judge.breed}
           </div>
     );
   }
@@ -37,23 +38,17 @@ JudgeDetail.defaultState = {
 }
 
 JudgeDetail.defaultProps = {
-  dogs: [],
-  nearShows: [],
-  farShows: [],
-  unreatedShows: [],
-  today: new Date(),
-  nearEnd: new Date(),
-  farEnd: new Date(),
-  dogIds: []
+  judge: [],
 
 }
 
 export default createContainer(({params}) => {
-  Meteor.subscribe("judges");
+  Meteor.subscribe("judge",params.id);
+  const judge = Judges.findOne({});
 
-  console.log(params.lenght);
+  console.log(judge);
 
   return {
-
+    judge,
   };
 }, JudgeDetail);
