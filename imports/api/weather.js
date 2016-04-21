@@ -45,7 +45,7 @@ if (Meteor.isServer) {
       name: 'weatherUpdater',
       schedule: function(parser) {
         // parser is a later.parse object
-        return parser.text('every 1 hour');
+        return parser.text('every 30 minutes');
       },
       job: function() {
         var weatherFetched = Meteor.call("weather.start");
@@ -88,19 +88,19 @@ if (Meteor.isServer) {
     'weather.check'(show){
       console.log(show);
       if(!show.gps) return false;
-      function pad(number) {
-        if (number < 10) {
-          return '0' + number;
-        }
-        return number;
-      }
-      const time = show.date.getUTCFullYear() +
-        '-' + pad(show.date.getUTCMonth() + 1) +
-        '-' + pad(show.date.getUTCDate()) +
-        'T' + pad(show.date.getUTCHours()) +
-        ':' + pad(show.date.getUTCMinutes()) +
-        ':' + pad(show.date.getUTCSeconds());
-      const uri = "https://api.forecast.io/forecast/"+Keys.forecast+"/"+show.gps.lat+","+show.gps.lng+","+time;
+      // function pad(number) {
+      //   if (number < 10) {
+      //     return '0' + number;
+      //   }
+      //   return number;
+      // }
+      // const time = show.date.getUTCFullYear() +
+      //   '-' + pad(show.date.getUTCMonth() + 1) +
+      //   '-' + pad(show.date.getUTCDate()) +
+      //   'T' + pad(show.date.getUTCHours()) +
+      //   ':' + pad(show.date.getUTCMinutes()) +
+      //   ':' + pad(show.date.getUTCSeconds());
+      const uri = "https://api.forecast.io/forecast/"+Keys.forecast+"/"+show.gps.lat+","+show.gps.lng+","+show.time;
       console.log(uri);
       HTTP.get(uri, function(error, response){
         if(error && response.statusCode !== 200){

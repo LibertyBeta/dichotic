@@ -27,30 +27,9 @@ if(Meteor.isServer){
 
         let calendar = google.calendar('v3');
 
-
-        // function pad(number) {
-        //   if (number < 10) {
-        //     return '0' + number;
-        //   }
-        //   return number;
-        // }
-        //
-        // const startTime = start.getUTCFullYear() +
-        //   '-' + pad(start.getUTCMonth() + 1) +
-        //   '-' + pad(start.getUTCDate()) +
-        //   'T' + pad(start.getUTCHours()) +
-        //   ':' + pad(start.getUTCMinutes()) +
-        //   ':' + pad(start.getUTCSeconds());
-        //
-        // const endTime = end.getUTCFullYear() +
-        //   '-' + pad(end.getUTCMonth() + 1) +
-        //   '-' + pad(end.getUTCDate()) +
-        //   'T' + pad(end.getUTCHours()) +
-        //   ':' + pad(end.getUTCMinutes()) +
-        //   ':' + pad(end.getUTCSeconds());
         const resource = {
          "end": {
-          "dateTime": show.date,
+          "dateTime": show.dateEnd,
           "timeZone": "America/New_York"
          },
          "start": {
@@ -58,7 +37,9 @@ if(Meteor.isServer){
           "timeZone": "America/New_York"
          },
          "location": show.location,
-         "summary": show.name
+         "summary": show.name,
+         "locked": true,
+         "htmlLink": "localhost:300/show/"+show._id
        };
        console.log(resource);
         calendar.events.insert(
