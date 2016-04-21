@@ -1,3 +1,4 @@
 node_modules/
 
-imports/api/keys.js
+imports/.credentials/
+imports/credentials/

@@ -5,7 +5,7 @@ import { SyncedCron } from 'meteor/percolate:synced-cron';
 import { Shows } from './shows.js';
 // const Shows = new Mongo.Collection('shows');
 import request from 'request';
-const Keys = require('./keys.js');
+import Keys from '../credentials/keys.js';
 
 // const weatherKey = {
 //   'clear-day':"wi-day-sunny",

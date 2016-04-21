@@ -93,7 +93,7 @@ export default class ShowModal extends Component{
             })}
           </ul>
           <label htmlFor="date">Date</label>
-          <input id="date" name="date" ref="date" type="date" onFocus={()=>this.hideSuggestions()}/>
+          <input id="date" name="date" ref="date" type="datetime-local" onFocus={()=>this.hideSuggestions()}/>
           <button type="submit">Create Event</button>
 
         </form>
