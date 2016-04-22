@@ -88,6 +88,7 @@ if (Meteor.isServer) {
     'weather.check'(show){
       console.log(show);
       if(!show.gps) return false;
+      console.log(show.time);
       // function pad(number) {
       //   if (number < 10) {
       //     return '0' + number;
@@ -100,11 +101,11 @@ if (Meteor.isServer) {
       //   'T' + pad(show.date.getUTCHours()) +
       //   ':' + pad(show.date.getUTCMinutes()) +
       //   ':' + pad(show.date.getUTCSeconds());
-      const uri = "https://api.forecast.io/forecast/"+Keys.forecast+"/"+show.gps.lat+","+show.gps.lng+","+show.time;
+      const uri = "https://api.forecast.io/forecast/"+Keys.forecast+"/"+show.gps.lat+","+show.gps.lng+","+show.time+":00";
       console.log(uri);
       HTTP.get(uri, function(error, response){
         if(error && response.statusCode !== 200){
-          console.log(error);
+          // console.log(error);
         } else {
           const hourly = response.data.hourly;
           Shows.update(

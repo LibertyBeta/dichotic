@@ -14,41 +14,16 @@ import '../imports/api/google.js';
 console.log(googleKey.web);
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
-function authorize(callback) {
-  console.log(googleKey.web);
-  const clientSecret = googleKey.web.client_secret;
-  const clientId = googleKey.web.client_id;
-  const redirectUrl = googleKey.web.redirect_uris[0];
-  const auth = new googleAuth();
-  const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-  if(Oauth.find({}).count() === 0 ){
-    getNewToken(oauth2Client, callback);
-  } else {
-    oauth2Client.credentials = Oauth.findOne({});
-    callback(oauth2Client);
-  }
-}
-
-function getNewToken(oauth2Client, callback) {
-  var authUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES
-  });
-  console.log('Authorize this app by visiting this url: ', authUrl);
-  window.href = authUrl;
-}
-
 
 
 WebApp.connectHandlers.use('/auth', function(req, res, next) {
-  console.log(req.params);
+  console.log("HITTING AUTH PATH");
   const clientSecret = googleKey.web.client_secret;
   const clientId = googleKey.web.client_id;
   const redirectUrl = googleKey.web.redirect_uris[0];
   const auth = new googleAuth();
   const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-  console.log(req.query.code);
-  // console.log(req);
+  // oauth2Client.getToken(req.query.code, callback);
   let callback = Meteor.bindEnvironment(function(err, token) {
     if (err) {
       console.log('Error while trying to retrieve access token', err);
