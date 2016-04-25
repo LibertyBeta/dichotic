@@ -1,5 +1,6 @@
 import {Dogs} from '../imports/api/dogs.js';
 import {Oauth, Calendar} from '../imports/api/oauth.js';
+import { HTTP } from 'meteor/http';
 import google from 'googleapis';
 import googleAuth from 'google-auth-library';
 import googleKey from "../imports/credentials/google.js";
@@ -11,7 +12,7 @@ import '../imports/api/google.js';
 
 
 
-console.log(googleKey.web);
+// console.log(googleKey.web);
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 
@@ -36,6 +37,19 @@ WebApp.connectHandlers.use('/auth', function(req, res, next) {
     res.end();
   });
   oauth2Client.getToken(req.query.code, callback);
+});
+
+WebApp.connectHandlers.use('/watcher', function(req, res, next) {
+  console.log("WATCHER REQUEST");
+  console.info("<---------------------->");
+  console.log(req.headers);
+
+  if(req.headers['x-goog-resource-uri']){
+    Meteor.call("google.update", req.headers['x-goog-channel-id']);
+  }
+
+  res.writeHead(200);
+  res.end();
 });
 
 
@@ -67,6 +81,21 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
       Calendar.insert(payload);
 
     });
+
+    let watchCallback = Meteor.bindEnvironment(function(err, response){
+      console.log("settings up new bind result");
+      // console.log(err);
+      // console.log(response);
+      if(err){
+        console.log(err);
+      } else {
+        console.log({$set:{'watch':response}});
+        calendarId = Calendar.findOne({});
+        let updateResult = Calendar.update({id:calendarId._id},{$set:{'watch':response}});
+        // console.log("UPDATING CALENDAR", updateResult);
+      }
+    });
+
     let localCallbase = Meteor.bindEnvironment(function(err, results){
       // test for existing calendar
       console.log("CHECKING FOR CALENAR");
@@ -91,6 +120,19 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
           }, insertCallback);
         }
       }
+      let calendarId = Calendar.findOne({});
+      console.log("setting up watch for ");
+      // console.log(calendarId);
+      calendar.events.watch({
+        auth: oauth2Client,
+        calendarId: calendarId.calendar,
+        resource:{
+          "address": "https://dichotic.rainer.space/watcher",
+          "id": calendarId._id,
+          "kind": "api#channel",
+          "type": "web_hook"
+        }
+      },watchCallback);
     });
 
     calendar.calendarList.list({

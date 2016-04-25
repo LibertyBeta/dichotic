@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { HTTP } from 'meteor/http'
+import { HTTP } from 'meteor/http';
 import { SyncedCron } from 'meteor/percolate:synced-cron';
 import { Shows } from './shows.js';
 // const Shows = new Mongo.Collection('shows');

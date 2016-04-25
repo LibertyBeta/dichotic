@@ -41,7 +41,7 @@ if(Meteor.isServer){
          "locked": true,
          "htmlLink": "localhost:300/show/"+show._id
        };
-       console.log(resource);
+      //  console.log(resource);
         calendar.events.insert(
           {
             'auth': oauth2Client,
@@ -50,10 +50,18 @@ if(Meteor.isServer){
 
           },
           function(err, result){
-            console.log(err, result);
+            if(err){
+              console.log(err);
+            } else {
+              console.log(result);
+              Shows.update({id:show._id}, {$set:{google:result}});
+            }
           }
         )
       }
+    },
+    "google.update"(channelId){
+      const calendarInfo = Calendar.findOne({id:channelId});
     }
   })
 }

@@ -8,7 +8,7 @@ import Keys from '../credentials/keys.js';
 import {Oauth,Calendar} from './oauth.js';
 export const Shows = new Mongo.Collection('shows');
 
-console.log(Keys);
+// console.log(Keys);
 
 if (Meteor.isServer) {
 
