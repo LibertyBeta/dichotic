@@ -55,16 +55,24 @@ WebApp.connectHandlers.use('/watcher', function(req, res, next) {
 
 
 WebApp.connectHandlers.use('/cal', function(req, res, next) {
+
+
+
   const clientSecret = googleKey.web.client_secret;
   const clientId = googleKey.web.client_id;
   const redirectUrl = googleKey.web.redirect_uris[0];
   const auth = new googleAuth();
   const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+
+
+
   if(Oauth.find({}).count() === 0 ){
+    //this means we don't hav ea token. There for go, go get one.
     var authUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES
     });
+    console.log(redirectUrl);
     console.log('Authorize this app by visiting this url: ', authUrl);
     // window.href = authUrl;
     res.writeHead(301, {'Location': authUrl});
@@ -74,55 +82,14 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
     let calendar = google.calendar('v3');
     // Calendar.drop();
     //Check if we've got a calendar
+
+    //insert Callback. For when we don't have a home calendar.
     let insertCallback = Meteor.bindEnvironment(function(error, response){
       console.log(error);
       console.log("INSERTING NEW CALENDAR REF");
       const payload = {calendar:result.id};
       Calendar.insert(payload);
-
-    });
-
-    let watchCallback = Meteor.bindEnvironment(function(err, response){
-      console.log("settings up new bind result");
-      // console.log(err);
-      // console.log(response);
-      if(err){
-        console.log(err);
-      } else {
-        console.log({$set:{'watch':response}});
-        calendarId = Calendar.findOne({});
-        let updateResult = Calendar.update({id:calendarId._id},{$set:{'watch':response}});
-        // console.log("UPDATING CALENDAR", updateResult);
-      }
-    });
-
-    let localCallbase = Meteor.bindEnvironment(function(err, results){
-      // test for existing calendar
-      console.log("CHECKING FOR CALENAR");
-      if(Calendar.find({}).count() === 0){
-        for(result of results.items){
-          if(result.summary === "DICHOTIC BETA"){
-            console.log("FOUND CALENDAR");
-            console.log([result.id]);
-            const payload = {calendar:result.id};
-            Calendar.insert(payload);
-            break;
-          }
-        }
-        console.log(Calendar.find({}).count());
-        if(Calendar.find({}).count() === 0){
-          console.log("CALLING FOR CALENDAR");
-          calendar.calendars.insert({
-            auth: oauth2Client,
-            resource: {
-              summary: "DICHOTIC BETA"
-            }
-          }, insertCallback);
-        }
-      }
       let calendarId = Calendar.findOne({});
-      console.log("setting up watch for ");
-      // console.log(calendarId);
       calendar.events.watch({
         auth: oauth2Client,
         calendarId: calendarId.calendar,
@@ -133,11 +100,78 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
           "type": "web_hook"
         }
       },watchCallback);
+
     });
 
+    //watch callback. For when we setup our watcher.
+    let watchCallback = Meteor.bindEnvironment(function(err, response){
+      console.log("settings up new bind result");
+      // console.log(err);
+      // console.log(response);
+      if(err){
+        console.log(err);
+      } else {
+        console.log({$set:{'watch':response}});
+        calendarId = Calendar.findOne({});
+        console.log(calendarId);
+        let updateResult = Calendar.update({_id:calendarId._id},{$set:{'watch':response}});
+        console.log("UPDATING CALENDAR", updateResult);
+      }
+    });
+
+    let listCalendarCallback = Meteor.bindEnvironment(function(err, results){
+      console.log(err);
+      // console.log(results);
+      console.log("CHECKING FOR CALENAR");
+
+      //First case, we DON'T have a store calendar record.
+      if(Calendar.find({}).count() === 0){
+
+        for(result of results.items){
+          console.log("Found Calender " + result.id);
+          console.log("Known as " + result.summary);
+          if(result.summary === "DICHOTIC BETA"){
+            console.log("FOUND CALENDAR");
+            console.log([result.id]);
+            const payload = {calendar:result.id};
+            Calendar.insert(payload);
+            break;
+          }
+        }
+
+        console.log(Calendar.find({}).count());
+
+        if(Calendar.find({}).count() === 0){
+          console.log("CALLING FOR CALENDAR");
+          calendar.calendars.insert({
+            auth: oauth2Client,
+            resource: {
+              summary: "DICHOTIC BETA"
+            }
+          }, insertCallback);
+        } else {
+          console.log("setting up watcher");
+          let calendarId = Calendar.findOne({});
+          calendar.events.watch({
+            auth: oauth2Client,
+            calendarId: calendarId.calendar,
+            resource:{
+              "address": "https://dichotic.rainer.space/watcher",
+              "id": calendarId._id,
+              "kind": "api#channel",
+              "type": "web_hook"
+            }
+          },watchCallback);
+        }
+      }
+
+    });
+
+
+    //We're authenticated. Check for a list of all calendars.
     calendar.calendarList.list({
       auth: oauth2Client,
-    }, localCallbase);
+    }, listCalendarCallback);
 
     // callback(oauth2Client);
     res.end();
