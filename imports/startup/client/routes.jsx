@@ -9,6 +9,7 @@ import DogDetails from '../../components/dog/dog-details/dog-details.jsx';
 import ShowPage from '../../components/show/show.jsx';
 import JudgeDetail from '../../components/judge/judge-detail.jsx';
 import JudgeGrid from '../../components/judge/judge-grid.jsx';
+import UserSettingsPage from '../../components/userSettings/user-settings.jsx';
 
 
 
@@ -17,6 +18,7 @@ export const renderRoutes = () => (
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="test" component={NotFoundPage} />
+      <Route path="settings" component={UserSettingsPage} />
       <Route path="dog" component={DogDetails}>
         <Route path="/dog/:id" component={DogDetails} />
       </Route>

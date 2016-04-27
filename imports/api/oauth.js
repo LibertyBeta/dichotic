@@ -6,6 +6,16 @@ export const Calendar = new Mongo.Collection('gCalendar');
 
 if(Meteor.isServer){
 
+  Meteor.publish('oauth', function oauthPub() {
+
+    return Oauth.find({});
+  });
+
+  Meteor.publish('calendar', function calendarPub() {
+
+    return Calendar.find({});
+  });
+
   Meteor.methods({
     "token.insert"(token){
       return Oauth.insert(token);

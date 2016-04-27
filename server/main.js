@@ -75,9 +75,12 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
     console.log(redirectUrl);
     console.log('Authorize this app by visiting this url: ', authUrl);
     // window.href = authUrl;
-    res.writeHead(301, {'Location': authUrl});
+    res.writeHead(303, {'Location': authUrl});
     res.end();
+    return;
   } else {
+    res.writeHead(303, {'Location': "/settings"});
+    res.end();
     oauth2Client.credentials = Oauth.findOne({});
     let calendar = google.calendar('v3');
     // Calendar.drop();
@@ -85,21 +88,28 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
 
     //insert Callback. For when we don't have a home calendar.
     let insertCallback = Meteor.bindEnvironment(function(error, response){
-      console.log(error);
-      console.log("INSERTING NEW CALENDAR REF");
-      const payload = {calendar:result.id};
-      Calendar.insert(payload);
-      let calendarId = Calendar.findOne({});
-      calendar.events.watch({
-        auth: oauth2Client,
-        calendarId: calendarId.calendar,
-        resource:{
-          "address": "https://dichotic.rainer.space/watcher",
-          "id": calendarId._id,
-          "kind": "api#channel",
-          "type": "web_hook"
-        }
-      },watchCallback);
+
+      if(error){
+        console.log(error);
+      } else {
+        console.log("INSERTING NEW CALENDAR REF");
+        console.log(response);
+        const payload = {calendar:response.id};
+        console.log(response.id);
+        Calendar.insert(payload);
+        let calendarId = Calendar.findOne({});
+        calendar.events.watch({
+          auth: oauth2Client,
+          calendarId: calendarId.calendar,
+          resource:{
+            "address": "https://dichotic.rainer.space/watcher",
+            "id": calendarId._id,
+            "kind": "api#channel",
+            "type": "web_hook"
+          }
+        },watchCallback);
+      }
+
 
     });
 
@@ -126,7 +136,7 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
 
       //First case, we DON'T have a store calendar record.
       if(Calendar.find({}).count() === 0){
-
+        let found = false;
         for(result of results.items){
           console.log("Found Calender " + result.id);
           console.log("Known as " + result.summary);
@@ -135,14 +145,15 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
             console.log([result.id]);
             const payload = {calendar:result.id};
             Calendar.insert(payload);
+            found = true;
             break;
           }
         }
 
-        console.log(Calendar.find({}).count());
+        // console.log(Calendar.find({}).count());
 
-        if(Calendar.find({}).count() === 0){
-          console.log("CALLING FOR CALENDAR");
+        if(found === false){
+          console.log("CALLING INSERT CALENDAR");
           calendar.calendars.insert({
             auth: oauth2Client,
             resource: {

@@ -78,8 +78,6 @@ if(Meteor.isServer){
 
         oauth2Client.credentials = Oauth.findOne({});
 
-        const calendarInfo = Calendar.findOne({"watch.id":channelId});
-
         let calendar = google.calendar('v3');
 
         let eventListCallback = Meteor.bindEnvironment(function(err, result){
@@ -95,7 +93,7 @@ if(Meteor.isServer){
                   calDescription: calEvents.description,
                   name: calEvents.summary
                 };
-                Shows.update({_id:showDocument._id, {$set:updateObj}});
+                Shows.update({_id:showDocument._id}, {$set:updateObj});
               }
             }
           }
