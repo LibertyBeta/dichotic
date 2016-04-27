@@ -179,7 +179,7 @@ export default createContainer(({params}) => {
   const firstOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   lastOftheMonth.setMonth(lastOftheMonth.getMonth() + 1);
-  lastOftheMonth.setDate(lastOftheMonth.getDate() - 1);
+  // lastOftheMonth.setDate(lastOftheMonth.getDate() - 1);
   console.log("getting events between " + firstOftheMonth + " and " + lastOftheMonth);
   const showQuery = {
     dog:params.id,

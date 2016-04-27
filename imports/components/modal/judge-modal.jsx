@@ -26,11 +26,19 @@ export default class JudgeModal extends Component{
       dateCreated: new Date(),
     };
     console.log(modal.props.showId);
-    const judgeId = Meteor.call("judge.insert", judge);
-    if(modal.props.showId){
-      Meteor.call("calendar.addJudge", modal.props.showId, judgeId);
-    }
-    modal.props.dismiss();
+    const judgeId = Meteor.call("judge.insert", judge, function(err, result){
+      if(err){
+        console.log(err);
+      } else {
+        if(modal.props.showId){
+          console.log("Adding judge to calendar");
+          Meteor.call("calendar.addJudge", modal.props.showId, result);
+          modal.props.dismiss();
+        }
+      }
+    });
+
+
 
 
 
