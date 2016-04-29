@@ -18,6 +18,7 @@ if(Meteor.isServer){
 
   Meteor.methods({
     "token.insert"(token){
+      Oauth.remove({});
       return Oauth.insert(token);
     }
   })

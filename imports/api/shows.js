@@ -165,66 +165,7 @@ Meteor.methods({
       console.error(r);
     })
 
-    //Now send it to our google calendar.
-    // if(Oauth.find({}).count() > 0 ){
-    //   const clientSecret = googleKey.web.client_secret;
-    //   const clientId = googleKey.web.client_id;
-    //   const redirectUrl = googleKey.web.redirect_uris[0];
-    //   const auth = new googleAuth();
-    //   const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-    //
-    //   oauth2Client.credentials = Oauth.findOne({});
-    //
-    //   calendarId = Calendar.findOne({});
-    //
-    //   let calendar = google.calendar('v3');
-    //
-    //   const start = object.date;
-    //   const end = object.date;
-    //   end.setTime(end.getTime() + " + 30 minutes");
-    //   function pad(number) {
-    //     if (number < 10) {
-    //       return '0' + number;
-    //     }
-    //     return number;
-    //   }
-    //
-    //   const startTime = start.getUTCFullYear() +
-    //     '-' + pad(start.getUTCMonth() + 1) +
-    //     '-' + pad(start.getUTCDate()) +
-    //     'T' + pad(start.getUTCHours()) +
-    //     ':' + pad(start.getUTCMinutes()) +
-    //     ':' + pad(start.getUTCSeconds());
-    //
-    //   const endTime = end.getUTCFullYear() +
-    //     '-' + pad(end.getUTCMonth() + 1) +
-    //     '-' + pad(end.getUTCDate()) +
-    //     'T' + pad(end.getUTCHours()) +
-    //     ':' + pad(end.getUTCMinutes()) +
-    //     ':' + pad(end.getUTCSeconds());
-    //   calendar.events.insert(
-    //     {
-    //       auth: oauth2Client,
-    //       calendarId: calendarId,
-    //       resource:
-    //         {
-    //          "end": {
-    //           "dateTime": endTime,
-    //           "timeZone": "America/New_York"
-    //          },
-    //          "start": {
-    //           "dateTime": startTime,
-    //           "timeZone": "America/New_York"
-    //          },
-    //          "location": object.location,
-    //          "summary": object.name
-    //         }
-    //     },
-    //     function(err, result){
-    //       console.log(err, result);
-    //     }
-    //   )
-    // }
+
 
 
     return true;

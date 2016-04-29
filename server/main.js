@@ -31,6 +31,7 @@ WebApp.connectHandlers.use('/auth', function(req, res, next) {
       return;
     }
 
+
     Meteor.call("token.insert", token);
     oauth2Client.credentials = token;
     res.writeHead(301, {'Location': '/cal'});
@@ -45,7 +46,7 @@ WebApp.connectHandlers.use('/watcher', function(req, res, next) {
   console.log(req.headers);
 
   if(req.headers['x-goog-resource-uri']){
-    Meteor.call("google.update", req.headers['x-goog-channel-id']);
+    Meteor.call("google.update", req.headers['x-goog-channel-id'], req.headers['x-goog-resource-id']);
   }
 
   res.writeHead(200);
@@ -72,7 +73,7 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
       access_type: 'offline',
       scope: SCOPES
     });
-    console.log(redirectUrl);
+    // console.log(redirectUrl);
     console.log('Authorize this app by visiting this url: ', authUrl);
     // window.href = authUrl;
     res.writeHead(303, {'Location': authUrl});
