@@ -35,13 +35,13 @@ if(Meteor.isServer){
               console.log('Error while trying to retrieve access token', err);
               return;
             }
-
-            Meteor.call("token.insert", token);
+            // console.log(token);
+            // console.log(oauth2Client.credentials);
+            Meteor.call("token.insert", oauth2Client.credentials);
 
           });
 
-          console.log(oauth2Client.tokenInfo);
-          oauth2Client.refreshAccessToken(callback);
+          oauth2Client.getAccessToken(callback);
         }
 
 
@@ -84,30 +84,7 @@ if(Meteor.isServer){
           updateCallback
         );
       }
-      // } else if (Oauth.find().count() > 0 && Oauth.findOne({}).expiry_date < (new Date()).getTime()) {
-      //   console.log("attempting to update token");
-      //   let callback = Meteor.bindEnvironment(function(err, token) {
-      //     console.log('attempting to refresh token');
-      //     if (err) {
-      //       console.log('Error while trying to retrieve access token', err);
-      //       return;
-      //     }
-      //     console.log("Thew new token is!")
-      //     console.log(token);
-      //     console.log(oauth2Client.credentials);
-      //     // let dies =
-      //
-      //     Meteor.call("token.insert", token, function(){
-      //       // Meteor.call("google.sendEvent", showId);
-      //     });
-      //     // Meteor.call("google.sendEvent", showId);
-      //   });
-      //   oauth2Client.credentials = Oauth.findOne({});
-      //   console.log("The old Token was" + Oauth.findOne({}).access_token);
-      //   // console.log(oauth2Client.tokenInfo);
-      //   oauth2Client.getAccessToken(callback);
-      //
-      // }
+
     },
 
     "google.updateBody"(showId){},
@@ -154,13 +131,13 @@ if(Meteor.isServer){
               console.log('Error while trying to retrieve access token', err);
               return;
             }
-
-            Meteor.call("token.insert", token);
+            // console.log(token);
+            // console.log(oauth2Client.credentials);
+            Meteor.call("token.insert", oauth2Client.credentials);
 
           });
 
-          console.log(oauth2Client.tokenInfo);
-          oauth2Client.refreshAccessToken(callback);
+          oauth2Client.getAccessToken(callback);
         }
 
 
@@ -171,7 +148,7 @@ if(Meteor.isServer){
         if(Calendar.find({"watch.id":channelId}).count() === 0 ){
           console.log("unknown watch channel, sending stop request");
           calendar.watch.stop({
-            auth: ouath2Client,
+            auth: oauth2Client,
             id: channelId,
             resourceId: resourceId
           }, function(err, result){
@@ -186,7 +163,7 @@ if(Meteor.isServer){
           }, eventListCallback);
         }
 
-      } 
+      }
     }
   })
 }
