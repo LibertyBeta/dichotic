@@ -6,6 +6,8 @@ import googleKey from "../credentials/google.js";
 import request from 'request';
 import Keys from '../credentials/keys.js';
 import {Oauth,Calendar} from './oauth.js';
+import {Dogs} from './dogs.js';
+import {Judges} from './judges.js';
 export const Shows = new Mongo.Collection('shows');
 
 // console.log(Keys);
@@ -73,7 +75,37 @@ if (Meteor.isServer) {
         console.info(e);
         throw new Meteor.Error( 500, e.toString());
       }
+    },
+    'calendar.googleDescription'(id){
+      console.log("GENERATING description");
+        const aShow = Shows.findOne({_id:id});
+        let description = '[DICHOTIC SHOW INFO BELOW. EDIT AT YOUR OWN RISK]';
+        if(aShow.weather.summary){
+          description += '\n>Weather : ' + aShow.weather.summary;
+        } else {
+          description += '\n>Weather : No Weather info at this time';
+        }
+
+        const dog = Dogs.findOne({_id:aShow.dog});
+
+        description += '\n>DOG : ' + dog.name;
+        const judges = Judges.find({_id:{$in:show.judges}}).fetch();
+        let judgeString = '\n>JUDGES : '
+        console.log(judges);
+        for(judge of judges){
+          judgeString += judge.name + ", ";
+        }
+        if(judgeString === '\n>JUDGES : '){
+          judgeString += "No Judges yet."
+        } else {
+          judgeString = judgeString.substring(0, judgeString.length - 2)
+        }
+        description += judgeString;
+
+        return description;
+
     }
+
   })
 
 
@@ -88,12 +120,14 @@ Meteor.methods({
   },
   'calendar.addJudge'(showId,id) {
     console.log("Updating show " + showId + " with judge " + id);
-    return Shows.update(
+    const result = Shows.update(
       {_id:showId},
       {$addToSet:
         {judges:id}
       }
     );
+    Meteor.call("google.updateBody", showId);
+    return result;
   },
   'calendar.insert'(object) {
     console.log(object);
@@ -101,7 +135,7 @@ Meteor.methods({
     // console.log("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key="+Keys.google);
 
     const uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+object.location.replace(" ", "+")+"&key="+Keys.google;
-
+    object['googParseError'] = false;
     const id = Shows.insert(object);
     //Once we're in the database, lets do some post load magic.
     // Things like setting the lat-lng, as well as the weather. If there is any.

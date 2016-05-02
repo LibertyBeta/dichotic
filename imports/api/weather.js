@@ -86,7 +86,7 @@ if (Meteor.isServer) {
     },
 
     'weather.check'(show){
-      console.log(show);
+      // console.log(show);
       if(!show.gps) return false;
       console.log(show.time);
       // function pad(number) {
@@ -108,6 +108,7 @@ if (Meteor.isServer) {
           // console.log(error);
         } else {
           const hourly = response.data.hourly;
+
           Shows.update(
             {
               _id:show._id
@@ -121,6 +122,12 @@ if (Meteor.isServer) {
                 "weather.last":new Date()
               }
             });
+            try{
+              Metoer.call("google.updateBody", show._id);
+            } catch(e){
+              log.error(e);
+            }
+
         }
       })
 
