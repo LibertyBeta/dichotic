@@ -1,13 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { FS } from 'meteor/cfs:base-package';
+import { S3 } from 'meteor/cfs:s3';
 import { resizeImageStream } from 'meteor/numtel:cfs-image-resize';
+import Keys from '../credentials/keys.js';
 
 console.log("starting up dogs");
 export const Dogs = new Mongo.Collection('dogs');
 
-let fileStore = new FS.Store.FileSystem("dogImages");
-let thumbStore = new FS.Store.FileSystem("thumbs", {
+let fileStore = new FS.Store.S3("dogImages",{
+  accessKeyId: Keys.aws.key, //required if environment variables are not set
+  secretAccessKey: Keys.aws.secret, //required if environment variables are not set
+  bucket: "dichotic", //required
+});
+let thumbStore = new FS.Store.S3("thumbs", {
+  accessKeyId: Keys.aws.key, //required if environment variables are not set
+  secretAccessKey: Keys.aws.secret, //required if environment variables are not set
+  bucket: "dichotic", //required
   beforeWrite: function(fileObj) {
     // We return an object, which will change the
     // filename extension and type for this store only.

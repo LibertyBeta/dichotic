@@ -29,3 +29,4 @@ numtel:cfs-image-resize
 percolate:synced-cron
 #russ:weather-icons
 tmeasday:check-npm-versions
+cfs:s3
