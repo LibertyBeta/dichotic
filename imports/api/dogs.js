@@ -9,14 +9,14 @@ console.log("starting up dogs");
 export const Dogs = new Mongo.Collection('dogs');
 
 let fileStore = new FS.Store.S3("dogImages",{
-  accessKeyId: Keys.aws.key, //required if environment variables are not set
-  secretAccessKey: Keys.aws.secret, //required if environment variables are not set
-  bucket: "dichotic", //required
+  accessKeyId: Keys.aws.key,
+  secretAccessKey: Keys.aws.secret,
+  bucket: "dichotic", 
 });
 let thumbStore = new FS.Store.S3("thumbs", {
-  accessKeyId: Keys.aws.key, //required if environment variables are not set
-  secretAccessKey: Keys.aws.secret, //required if environment variables are not set
-  bucket: "dichotic", //required
+  accessKeyId: Keys.aws.key,
+  secretAccessKey: Keys.aws.secret,
+  bucket: "dichotic", 
   beforeWrite: function(fileObj) {
     // We return an object, which will change the
     // filename extension and type for this store only.
