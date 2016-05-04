@@ -7,16 +7,19 @@ import Keys from '../credentials/keys.js';
 
 console.log("starting up dogs");
 export const Dogs = new Mongo.Collection('dogs');
+export const MedicalRecords = new Mongo.Collection('medicalRecord');
 
 let fileStore = new FS.Store.S3("dogImages",{
   accessKeyId: Keys.aws.key,
   secretAccessKey: Keys.aws.secret,
-  bucket: "dichotic", 
+  bucket: "dichotic",
+  folder: "Dogs"
 });
 let thumbStore = new FS.Store.S3("thumbs", {
   accessKeyId: Keys.aws.key,
   secretAccessKey: Keys.aws.secret,
-  bucket: "dichotic", 
+  bucket: "dichotic",
+  folder: "Dogs/thumbs",
   beforeWrite: function(fileObj) {
     // We return an object, which will change the
     // filename extension and type for this store only.
@@ -39,6 +42,16 @@ export const DogImages = new FS.Collection("DogImages", {
             contentTypes: ['image/*']
         }
     }
+});
+
+let medicalStore = new FS.Store.S3("medicalDocuments",{
+  accessKeyId: Keys.aws.key,
+  secretAccessKey: Keys.aws.secret,
+  bucket: "dichotic",
+  folder: "MedicalDocuments",
+});
+export const MedicalDocuments = new FS.Collection("MedicalDocuments", {
+    stores: [medicalStore]
 });
 
 
@@ -66,7 +79,32 @@ if (Meteor.isServer) {
     return Dogs.find();
   });
 
+  Meteor.publish('dogMedicalDocuments', function dogMedicalDocumentPub(id) {
+
+    return MedicalRecords.find({dog:id});
+  });
+
+  Meteor.publish('allMedicalDocuments', function allMedicalPub() {
+
+    return MedicalRecords.find();
+  });
+
   DogImages.allow({
+    insert:function(userId,project){
+      return true;
+    },
+    update:function(userId,project,fields,modifier){
+     return true;
+    },
+    remove:function(userId,project){
+      return true;
+    },
+    download:function(){
+      return true;
+    }
+  });
+
+  MedicalDocuments.allow({
     insert:function(userId,project){
       return true;
     },
@@ -92,6 +130,19 @@ Meteor.methods({
     // }
     console.log(object);
     const id = Dogs.insert(object);
+    return id;
+  },
+  'dog.medical'(object) {
+    const id = MedicalRecords.insert(object);
+    Dogs.update(
+      {_id: object.dog},
+      {$addToSet:
+        {medical:id}
+      }
+    );
+
+    console.log(object);
+    console.log(id);
     return id;
   },
   'dog.remove'(taskId) {

@@ -83,10 +83,10 @@ export default class DogDetails extends Component {
         return <ShowModal dog={this.props.dog} dismiss={this.hideModal}/>;
         break;
       case this.props.modals.medical:
-        return <MedicalModal dog={this.props.dog}/>;
+        return <MedicalModal dog={this.props.dog} dismiss={this.hideModal}/>;
         break;
       case this.props.modals.remove:
-        return <RemoveModal dog={this.props.dog}/>;
+        return <RemoveModal dog={this.props.dog} dismiss={this.hideModal}/>;
         break;
       default:
         return "NO MODAL SET";
@@ -158,13 +158,9 @@ DogDetails.propTypes = {
 
 export default createContainer(({params}) => {
   let dogImageId ='';
-  let test = "FART";
   const showId = params.showId;
   Meteor.subscribe("dog", params.id);
   Meteor.subscribe("aDogsShow",params.id);
-
-  console.log(test);
-
 
   const dogQuery = {_id:params.id};
 
@@ -180,7 +176,6 @@ export default createContainer(({params}) => {
   const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   lastOftheMonth.setMonth(lastOftheMonth.getMonth() + 1);
   // lastOftheMonth.setDate(lastOftheMonth.getDate() - 1);
-  console.log("getting events between " + firstOftheMonth + " and " + lastOftheMonth);
   const showQuery = {
     dog:params.id,
     date:{
@@ -198,7 +193,7 @@ export default createContainer(({params}) => {
     }
     monthShows[show.date.getUTCDate()].push(show);
   }
-  console.log(monthShows);
+
 
 
   return {
