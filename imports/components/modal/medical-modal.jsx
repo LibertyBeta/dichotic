@@ -38,9 +38,10 @@ export default class MedicalModal extends Component{
       if(err){
         console.log(err);
       } else {
-        // if(this.refs.expires){
-        //   //push event end of google calendar
-        // }
+        if(medical.expires){
+          Meteor.call("google.documentExpireEvent", medical);
+        }
+        modal.props.dismiss();
       }
     });
   }

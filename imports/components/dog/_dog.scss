@@ -75,5 +75,18 @@
       padding-left: 0.5rem;
       padding-top: 0.5rem;
     }
+    .medical{
+      width: 100%;
+      thead{
+        border-bottom: 1px solid $border-shade;
+        border-collapse: separate;
+        border-spacing: 1px;
+      }
+      tr{
+        td{
+          text-align: center;
+        }
+      }
+    }
   }
 }

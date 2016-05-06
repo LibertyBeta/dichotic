@@ -66,12 +66,10 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('dogs', function dogPublication() {
-    console.log('subscribing for a single dog');
     return Dogs.find();
   });
 
   Meteor.publish('dog', function aDogPublication(id) {
-
     return Dogs.find({_id:id});
   });
 
@@ -80,13 +78,17 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('dogMedicalDocuments', function dogMedicalDocumentPub(id) {
-
     return MedicalRecords.find({dog:id});
   });
 
   Meteor.publish('allMedicalDocuments', function allMedicalPub() {
 
     return MedicalRecords.find();
+  });
+
+  Meteor.publish('medicalPaperwork', function medicalPaperworkPub(ids){
+
+    return MedicalDocuments.find({_id:{$in:ids}});
   });
 
   DogImages.allow({

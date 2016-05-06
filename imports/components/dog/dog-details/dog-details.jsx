@@ -8,7 +8,7 @@ import ShowModal from '../../modal/show-modal.jsx';
 import RemoveModal from '../../modal/remove-modal.jsx';
 import ShowCalendarPage from '../../show-calendar/show-calendar-page.jsx';
 
-import { Dogs, DogImages } from "../../../api/dogs.js";
+import { Dogs, DogImages, MedicalRecords, MedicalDocuments } from "../../../api/dogs.js";
 import { Shows } from "../../../api/shows.js"
 
 export default class DogDetails extends Component {
@@ -125,7 +125,41 @@ export default class DogDetails extends Component {
                 Breed: {this.props.dog.breed}<br/>
                 Color: {this.props.dog.color}<br/>
                 Gender: {this.props.dog.gender}
+                <hr/>
               </div>
+              <table className="medical">
+                <thead>
+                  <tr>
+                    <th>
+                      Document
+                    </th>
+                    <th>
+                      Expires
+                    </th>
+                    <th>
+                      Paperwork
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.medical.map((medDoc)=>{
+                    return (
+                      <tr key={medDoc._id}>
+                        <td>
+                          {medDoc.title}
+                        </td>
+                        <td>
+                          {medDoc.expires.toDateString()}
+                        </td>
+                        <td>
+                          <a href={this.props.medicalPaperwork[medDoc.assosiatedDocument]}>Link to Document</a>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+
             </div>
             <ShowCalendarPage shows={this.props.shows} />
 
@@ -138,6 +172,7 @@ export default class DogDetails extends Component {
 DogDetails.defaultProps = {
   dog: {},
   shows: [],
+  medical: [],
   image: {
     url(){
       return '';
@@ -154,6 +189,7 @@ DogDetails.defaultProps = {
 DogDetails.propTypes = {
   dog: React.PropTypes.object,
   shows: React.PropTypes.object,
+  medical: React.PropTypes.array
 }
 
 export default createContainer(({params}) => {
@@ -161,6 +197,7 @@ export default createContainer(({params}) => {
   const showId = params.showId;
   Meteor.subscribe("dog", params.id);
   Meteor.subscribe("aDogsShow",params.id);
+  Meteor.subscribe("dogMedicalDocuments", params.id);
 
   const dogQuery = {_id:params.id};
 
@@ -171,6 +208,19 @@ export default createContainer(({params}) => {
     };
   }
   Meteor.subscribe("dogImages", imageId.image);
+
+
+  let medicalDocIds = [];
+  for(med of MedicalRecords.find({}).fetch()){
+    medicalDocIds.push(med.assosiatedDocument);
+  }
+
+
+  Meteor.subscribe("medicalPaperwork", medicalDocIds);
+  let docS3Store = {};
+  for (file of MedicalDocuments.find({}).fetch()) {
+    docS3Store[file._id] = file.url();
+  }
   const today = new Date();
   const firstOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const lastOftheMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -201,5 +251,7 @@ export default createContainer(({params}) => {
     shows: monthShows,
     image: DogImages.findOne({_id:imageId.image}),
     showId: showId,
+    medical: MedicalRecords.find({}).fetch(),
+    medicalPaperwork : docS3Store
   };
 }, DogDetails);
