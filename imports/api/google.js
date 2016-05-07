@@ -6,6 +6,7 @@ import { Dogs } from './dogs.js';
 import google from 'googleapis';
 import googleAuth from 'google-auth-library';
 import googleKey from "../credentials/google.js";
+import Keys from '../credentials/keys.js';
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 let isOauthed = function(){
@@ -201,7 +202,8 @@ if(Meteor.isServer){
           } else {
             for(calEvents of result.items){
               let showDocument = Shows.findOne({"google.id":calEvents.id});
-              if(showDocument !== []){
+              // console.log(showDocument);
+              if(typeof showDocument !== 'undefined' && showDocument !== []){
                 let updateObj = {
                   date: new Date(calEvents.start.dateTime),
                   dateEnd: new Date(calEvents.end.dateTime),
