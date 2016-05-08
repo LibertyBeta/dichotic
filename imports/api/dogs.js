@@ -147,6 +147,74 @@ Meteor.methods({
     console.log(id);
     return id;
   },
+  'dog.cancelPedigree'(id){
+    Dogs.update(
+      {_id:id},
+      {$set:
+        {pedigree: false}
+      }
+    );
+  },
+  'dog.startPedigree'(id){
+    Dogs.update(
+      {_id:id},
+      {$set:
+        {
+          pedigree: null,
+          parentage:[],
+          dateOfBirth: '',
+          pedigreeDocument:'',
+          points: '',
+          title: '',
+        }
+      }
+    );
+  },
+  'dog.setDateOfBirth'(id, birthday){
+    Dogs.update(
+      {_id:id},
+      {
+        $set:{dateOfBirth: new Date(birthday)}
+      }
+    )
+  },
+  'dog.setParentage'(id, sire, dam){
+    const parentage = {};
+    if(sire !== null){
+      parentage['sire'] = sire;
+    } else {
+      parentage['sire'] = '';
+    }
+
+    if(dam !== null){
+      parentage['dam'] = dam;
+    } else {
+      parentage['dam'] = '';
+    }
+
+    Dogs.update(
+      {_id:id},
+      {
+        $set:{parentage: parentage}
+      }
+    )
+  },
+  'dog.setPedigreeDocument'(id,docId){
+    Dogs.update(
+      {_id:id},
+      {
+        $set:{pedigreeDocument: docId}
+      }
+    )
+  },
+  'dog.finishPedigree'(id){
+    Dogs.update(
+      {_id:id},
+      {
+        $set:{pedigree: true}
+      }
+    )
+  },
   'dog.remove'(taskId) {
     check(taskId, String);
 

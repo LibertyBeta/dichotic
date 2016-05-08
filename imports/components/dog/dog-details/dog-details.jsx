@@ -7,6 +7,7 @@ import MedicalModal from '../../modal/medical-modal.jsx';
 import ShowModal from '../../modal/show-modal.jsx';
 import RemoveModal from '../../modal/remove-modal.jsx';
 import ShowCalendarPage from '../../show-calendar/show-calendar-page.jsx';
+import Pedigree from '../../pedigree/pedigree.jsx'
 
 import { Dogs, DogImages, MedicalRecords, MedicalDocuments } from "../../../api/dogs.js";
 import { Shows } from "../../../api/shows.js"
@@ -57,8 +58,7 @@ export default class DogDetails extends Component {
   }
 
   modalCase(typeOfModal){
-    console.log("clicking");
-    console.log(typeOfModal);
+
     this.setState({
       modal: typeOfModal,
       modalHelperClass: '',
@@ -88,17 +88,54 @@ export default class DogDetails extends Component {
       case this.props.modals.remove:
         return <RemoveModal dog={this.props.dog} dismiss={this.hideModal}/>;
         break;
+      case this.props.modals.pedigree:
+        return <Pedigree dog={this.props.dog} dismiss={this.hideModal}/>;
+        break;
       default:
         return "NO MODAL SET";
         break;
     }
   }
 
+  renderPedigree(){
+    if(this.props.dog.pedigree || this.props.dog.pedigree === false){
+      return null;
+    } else {
+
+      return (
+        <div className="modal">
+          <div className="modal-content">
+            <Pedigree dog={this.props.dog}/>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  renderDOB(){
+    if(this.props.dog.dateOfBirth instanceof Date){
+      return this.props.dog.dateOfBirth.toISOString();
+    }
+  }
+
+  sireLink(){
+    if(this.props.dog.parentage.sire){
+      return <Link to={`/dog/${this.props.dog.parentage.sire}`}>View Sire</Link>
+    }
+  }
+
+  damLink(){
+    if(this.props.dog.parentage.dam){
+      return <Link to={`/dog/${this.props.dog.parentage.dam}`}>View Dam</Link>
+    }
+  }
 
 
   render() {
+
     return (
           <div className="content dog">
+            {this.renderPedigree()}
             <div className={"modal "+ this.state.modalHelperClass}>
               <div className="modal-content">
                 <button onClick={this.hideModal}>X</button>
@@ -125,6 +162,18 @@ export default class DogDetails extends Component {
                 Breed: {this.props.dog.breed}<br/>
                 Color: {this.props.dog.color}<br/>
                 Gender: {this.props.dog.gender}
+                {(() => {
+                  console.log(this.props.dog);
+                  if(this.props.dog.pedigree){
+                    return (
+                      <section>
+                        Date of Birth: {this.renderDOB()} <br/>
+                        Sire: {this.sireLink()} <br/>
+                        Dam: {this.damLink()} <br/>
+                      </section>
+                    )
+                  }
+                })()}
                 <hr/>
               </div>
               <table className="medical">
@@ -182,7 +231,8 @@ DogDetails.defaultProps = {
   modals:{
     'remove':"remove",
     'show':"show",
-    'medical':"medical"
+    'medical':"medical",
+    'pedigree':"pedigree"
   }
 }
 

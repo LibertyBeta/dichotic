@@ -88,7 +88,6 @@ if (Meteor.isServer) {
     'weather.check'(show){
       // console.log(show);
       if(!show.gps) return false;
-      console.log(show.time);
       // function pad(number) {
       //   if (number < 10) {
       //     return '0' + number;
@@ -125,7 +124,7 @@ if (Meteor.isServer) {
             try{
               Metoer.call("google.updateBody", show._id);
             } catch(e){
-              log.error(e);
+              console.log(e);
             }
 
         }
