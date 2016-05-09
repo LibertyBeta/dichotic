@@ -46,8 +46,11 @@ export default class Pedigree extends Component{
       return (
         <section>
           {this.props.dog.name} doesn't have a pedigree, do you want to add it?
-          <button onClick={()=>this.initPedigree()}>Yes</button>
-          <button onClick={()=>this.cancelPedigree()}>No</button>
+          <div className="button-group left">
+            <button onClick={()=>this.initPedigree()}>Yes</button>
+            <button onClick={()=>this.cancelPedigree()}>No</button>
+          </div>
+
         </section>
 
       )
@@ -62,7 +65,9 @@ export default class Pedigree extends Component{
           <seciton>
             When was this dog born?
             <input type="date" name="dateOfBirth" ref="dateOfBirth"></input>
-            <button onClick={()=>this.setDateOfBirth()}>Next</button>
+            <div className="button-group left">
+              <button onClick={()=>this.setDateOfBirth()}>Next</button>
+            </div>
           </seciton>
         )
       } else if(this.props.dog.parentage.length === 0) {
@@ -70,23 +75,35 @@ export default class Pedigree extends Component{
         return (
           <section>
             Are this dog's parents in DICHOTIC?
-            Sire: <select ref="sire" name="sire">
-                    <option value='null'>Sire Not in Dichotic</option>
-                    {this.props.maleDogs.map((male)=>{
-                      return (
-                        <option key={male._id} value={male._id}>{male.name}</option>
-                      )
+            <div className="input-group">
+              Sire: <select ref="sire" name="sire">
+                      <option value='null'>Sire Not in Dichotic</option>
+                      {this.props.maleDogs.map((male)=>{
+                        if(male._id !== this.props.dog._id){
+                          return (
+                            <option key={male._id} value={male._id}>{male.name}</option>
+                          )
+                        }
+
+                      })}
+                    </select>
+            </div>
+            <div className="input-group">
+              Dam: <select ref="dam" name="dam">
+                    <option value='null'>Dam Not in Dichotic</option>
+                    {this.props.femaleDogs.map((female)=>{
+                      if(female._id !== this.props.dog._id){
+                        return (
+                          <option key={female._id} value={female._id}>{female.name}</option>
+                        )
+                      }
                     })}
                   </select>
-            Dam: <select ref="dam" name="dam">
-                  <option value='null'>Dam Not in Dichotic</option>
-                  {this.props.femaleDogs.map((female)=>{
-                    return (
-                      <option key={female._id} value={female._id}>{female.name}</option>
-                    )
-                  })}
-                </select>
-            <button onClick={()=>this.setParentage()}>Next</button>
+            </div>
+            <div className="button-group left">
+              <button onClick={()=>this.setParentage()}>Next</button>
+            </div>
+
           </section>
         )
       } else if(this.props.dog.pedigreeDocument === ''){
@@ -94,7 +111,9 @@ export default class Pedigree extends Component{
           <section>
             Upload a Pedigree Document:
             <input type="file" name="pedigree" ref="pedigree"></input>
-            <button onClick={()=>this.setPedigreeDocument()}>Finish</button>
+            <div className="button-group left">
+              <button onClick={()=>this.setPedigreeDocument()}>Finish</button>
+            </div>
           </section>
         )
       } else {

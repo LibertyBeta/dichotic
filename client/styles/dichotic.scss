@@ -18,6 +18,20 @@ body{
   padding: 0;
 }
 
+.button-group{
+  width: 100%;
+  display: flex;
+  &.right{
+    justify-content: flex-start;;
+  }
+  &.left{
+    justify-content: flex-end;
+  }
+  &.center{
+    justify-content: center;
+  }
+}
+
 #root{
   width: 100vw;
   height: 100vh;
