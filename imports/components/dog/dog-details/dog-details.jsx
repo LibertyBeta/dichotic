@@ -134,27 +134,7 @@ export default class DogDetails extends Component {
   render() {
 
     return (
-          <div className="content dog">
-            {this.renderPedigree()}
-            <div className={"modal "+ this.state.modalHelperClass}>
-              <div className="modal-content">
-                <button onClick={this.hideModal}>X</button>
-                {this.renderModal()}
-              </div>
-            </div>
-            <div className="bar" style={this.state.style}>
-              <div className="thumb-image">
-                <img src={this.props.image.url({store:'thumbs'})}></img>
-              </div>
-              <h1>
-                {this.props.dog.name}
-              </h1>
-              <nav>
-                <button onClick={()=>this.modalCase(this.props.modals.medical)}>add medical document</button>
-                <button onClick={()=>this.modalCase(this.props.modals.show)}>add show</button>
-                <button onClick={()=>this.modalCase(this.props.modals.remove)}>remove dog</button>
-              </nav>
-            </div>
+          <div className="intereor">
 
             <div className="specs">
               <div className="biological">

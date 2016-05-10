@@ -67,26 +67,35 @@
 }
 
 .content.dog{
+  display: flex;
   flex-flow: row wrap !important;
   align-items: flex-start;
   align-content: flex-start;
-  .specs{
-    .biological{
-      padding-left: 0.5rem;
-      padding-top: 0.5rem;
-    }
-    .medical{
-      width: 100%;
-      thead{
-        border-bottom: 1px solid $border-shade;
-        border-collapse: separate;
-        border-spacing: 1px;
+  section{
+    width: 100%;
+  }
+  .intereor{
+    width: 100%;
+    display: flex;
+    .specs{
+      .biological{
+        padding-left: 0.5rem;
+        padding-top: 0.5rem;
       }
-      tr{
-        td{
-          text-align: center;
+      .medical{
+        width: 100%;
+        thead{
+          border-bottom: 1px solid $border-shade;
+          border-collapse: separate;
+          border-spacing: 1px;
+        }
+        tr{
+          td{
+            text-align: center;
+          }
         }
       }
     }
   }
+
 }
