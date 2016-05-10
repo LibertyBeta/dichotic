@@ -83,18 +83,20 @@ export default class DogDetails extends Component {
   }
 
   renderPedigree(){
-    if(this.props.dog.pedigree || this.props.dog.pedigree === false){
-      return null;
-    } else {
-
-      return (
-        <div className="modal">
-          <div className="modal-content">
-            <Pedigree dog={this.props.dog}/>
+    if(this.props.dog._id){
+      if(this.props.dog.pedigree || this.props.dog.pedigree === false){
+        return null;
+      } else {
+        return (
+          <div className="modal">
+            <div className="modal-content">
+              <Pedigree dog={this.props.dog} params={{id:this.props.dog._id}}/>
+            </div>
           </div>
-        </div>
-      )
+        )
+      }
     }
+
   }
 
 
