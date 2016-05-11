@@ -123,6 +123,12 @@ body{
       background-color: rgba(gray, 0.8);
       // border: 1px solid rgba(gray, 0.6);
     }
+    &:focus{
+      outline:0;
+    }
+    &:disabled{
+      
+    }
 
 
   }

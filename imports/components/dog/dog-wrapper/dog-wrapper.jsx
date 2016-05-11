@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import {Link} from 'react-router';
+import { browserHistory, Link} from 'react-router';
 
 import MedicalModal from '../../modal/medical-modal.jsx';
 import ShowModal from '../../modal/show-modal.jsx';
@@ -62,6 +62,14 @@ export default class DogDetails extends Component {
     });
   }
 
+  goHome(){
+    browserHistory.push('/dog/'+this.props.dog._id);
+  }
+
+  genealogy(){
+    browserHistory.push('/dog/'+this.props.dog._id +'/genealogy');
+  }
+
   renderModal(){
     switch (this.state.modal) {
       case this.props.modals.show:
@@ -119,9 +127,15 @@ export default class DogDetails extends Component {
                 {this.props.dog.name}
               </h1>
               <nav>
-                <button onClick={()=>this.modalCase(this.props.modals.medical)}>add medical document</button>
-                <button onClick={()=>this.modalCase(this.props.modals.show)}>add show</button>
-                <button onClick={()=>this.modalCase(this.props.modals.remove)}>remove dog</button>
+                <button onClick={()=>this.goHome()}><i className="fa fa-paw fa-lg"></i> Home</button>
+                <button onClick={()=>this.modalCase(this.props.modals.medical)}><i className="fa fa-heartbeat fa-lg"></i> Add Medical Document</button>
+                <button onClick={()=>this.modalCase(this.props.modals.show)}><i className="fa fa-calendar-o fa-lg"></i> Add Dog Show</button>
+                <button onClick={()=>this.modalCase(this.props.modals.remove)}><i className="fa fa-archive fa-lg"></i> Retire Dog</button>
+                {(() => {
+                  if(this.props.dog.pedigree === true){
+                    return <button onClick={()=>this.genealogy()}><i className="fa fa-line-chart fa-lg"></i> Genealogy Chart</button>
+                  }
+                })()}
               </nav>
             </div>
 
