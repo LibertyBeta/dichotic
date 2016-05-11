@@ -114,19 +114,23 @@ export default class DogDetails extends Component {
 
   renderDOB(){
     if(this.props.dog.dateOfBirth instanceof Date){
-      return this.props.dog.dateOfBirth.toISOString();
+      return this.props.dog.dateOfBirth.getUTCMonth() + '/' + this.props.dog.dateOfBirth.getUTCDate() + '/' + this.props.dog.dateOfBirth.getUTCFullYear();
     }
   }
 
   sireLink(){
-    if(this.props.dog.parentage.sire){
+    if(this.props.dog.parentage.sire !== 'null'){
       return <Link to={`/dog/${this.props.dog.parentage.sire}`}>View Sire</Link>
+    } else {
+      return "Sire Not in System";
     }
   }
 
   damLink(){
-    if(this.props.dog.parentage.dam){
+    if(this.props.dog.parentage.dam !== 'null'){
       return <Link to={`/dog/${this.props.dog.parentage.dam}`}>View Dam</Link>
+    } else {
+      return "Dam Not in System";
     }
   }
 

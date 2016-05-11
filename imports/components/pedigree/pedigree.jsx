@@ -148,14 +148,13 @@ Pedigree.propTypes = {
 export default createContainer(({params}) => {
   Meteor.subscribe("dogs");
   const dog = Dogs.findOne({_id:params.id});
-  console.log(dog);
+
   let dobCutoff = new Date();
 
   if(dog instanceof Object && dog.dateOfBirth instanceof Date){
-    console.log("FOUND BIRHTDAY");
     dobCutoff = dog.dateOfBirth;
   }
-  console.log(dobCutoff);
+  
   const maleDogs = Dogs.find({
     $and:[
       {gender:'Male'},

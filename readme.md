@@ -12,4 +12,4 @@ Dichotic is the project born out of my frustration of managing our dogs at Westm
 
 ## Release Cycle
 
-The first Alpha should be out around May 20. This will be a VERY rough alpha. Until then, check dev for the most recent brushes of development. 
+The first Alpha should be out around May 20. This will be a VERY rough alpha. Until then, check dev for the most recent brushes of development. Oh! And install instructions. s
