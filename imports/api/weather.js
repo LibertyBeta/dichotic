@@ -122,7 +122,7 @@ if (Meteor.isServer) {
               }
             });
             try{
-              Metoer.call("google.updateBody", show._id);
+              Meteor.call("google.updateBody", show._id);
             } catch(e){
               console.log(e);
             }
