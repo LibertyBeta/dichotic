@@ -182,7 +182,10 @@ if(Meteor.isServer){
           eventId: show.google.id,
           resource: resource
         }, function(err, result){
-          console.log(err);
+          if(err){
+            console.log("<- Update Body Error");
+            console.log()
+          }
         });
 
       } else {
@@ -219,6 +222,17 @@ if(Meteor.isServer){
                   },
                   name: calEvents.summary
                 };
+                const now = new Date();
+                if(showDocument.weather.updatePast < now){
+                  let weatherObj = {
+                    summary: '',
+                    active: true,
+                    updated: false,
+                    icon: 'wi-cloud-refresh',
+                    last: new Date(),
+                  };
+                  updateObj['weather'] = weatherObj;
+                }
                 Shows.update({_id:showDocument._id}, {$set:updateObj});
                 const uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+calEvents.location.replace(" ", "+")+"&key="+Keys.google;
 

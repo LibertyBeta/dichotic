@@ -101,13 +101,14 @@ if (Meteor.isServer) {
       //   ':' + pad(show.date.getUTCMinutes()) +
       //   ':' + pad(show.date.getUTCSeconds());
       const uri = "https://api.forecast.io/forecast/"+Keys.forecast+"/"+show.gps.lat+","+show.gps.lng+","+show.time+":00";
-      console.log(uri);
+      console.log("Weahter is" + uri);
       HTTP.get(uri, function(error, response){
         if(error && response.statusCode !== 200){
-          // console.log(error);
+          console.log(error);
         } else {
           const hourly = response.data.hourly;
-
+          let updateOn = new Date();
+          updateOn.setHours(updateOn.getHours() + 1);
           Shows.update(
             {
               _id:show._id
@@ -118,11 +119,12 @@ if (Meteor.isServer) {
                 "weather.summary": hourly.summary,
                 "weather.icon": weatherKey[hourly.icon],
                 "weather.hourly": hourly.data,
-                "weather.last":new Date()
+                "weather.last":new Date(),
+                "weather.updatePast":updateOn,
               }
             });
             try{
-              Meteor.call("google.updateBody", show._id);
+              // Meteor.call("google.updateBody", show._id);
             } catch(e){
               console.log(e);
             }

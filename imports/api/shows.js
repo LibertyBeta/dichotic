@@ -186,6 +186,7 @@ Meteor.methods({
                   updated: false,
                   icon: 'wi-cloud-refresh',
                   last: new Date(),
+                  updatePast: new Date(),
                 }
               }
             }
