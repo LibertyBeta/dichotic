@@ -130,7 +130,6 @@ Meteor.methods({
     // if (! Meteor.userId()) {
     //   throw new Meteor.Error('not-authorized');
     // }
-    console.log(object);
     const id = Dogs.insert(object);
     return id;
   },
@@ -143,8 +142,6 @@ Meteor.methods({
       }
     );
 
-    console.log(object);
-    console.log(id);
     return id;
   },
   'dog.cancelPedigree'(id){

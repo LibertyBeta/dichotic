@@ -23,7 +23,6 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'judge.insert'(object) {
-    console.log(object);
     const id = Judges.insert(object);
     return id;
   },

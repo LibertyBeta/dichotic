@@ -11,7 +11,7 @@ import Keys from '../credentials/keys.js';
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 let isOauthed = function(){
-  console.log("checking Oauthed");
+  // console.log("checking Oauthed");
   if(Oauth.find({}).count() > 0){
     return true ;
   } else {
@@ -48,9 +48,8 @@ let buildOauthClient = function(){
 if(Meteor.isServer){
   Meteor.methods({
     "google.documentExpireEvent"(medical){
-      console.log("Attemtping to set reminder for google");
+      
       if(isOauthed()){
-        console.log("Oauthed, doing the thing");
         const dog = Dogs.findOne({_id:medical.dog});
         const oauth2Client = buildOauthClient();
         const calendar = google.calendar('v3');
@@ -75,8 +74,7 @@ if(Meteor.isServer){
 
           },
             function(err, result){
-              console.log(err);
-              console.log(result);
+
             }
           );
 
@@ -88,15 +86,8 @@ if(Meteor.isServer){
       const dog = Dogs.findOne({_id:show.dog});
       // Now send it to our google calendar.
 
-      console.log("UPDAT TOKENS?");
-      console.log(Oauth.findOne({}).expiry_date < (new Date()).getTime());
-
       if(isOauthed()){
-        console.log("sending event to google");
-
         let oauth2Client = buildOauthClient();
-
-
         calendarId = Calendar.findOne({});
 
         let calendar = google.calendar('v3');
@@ -120,7 +111,7 @@ if(Meteor.isServer){
 
         let updateCallback = Meteor.bindEnvironment(function(err, result){
           if(err){
-            console.log(err);
+
           } else {
 
             Shows.update({_id:show._id}, {$set:{google:result}});
@@ -144,11 +135,7 @@ if(Meteor.isServer){
 
 
       if(isOauthed()){
-        console.log("sending event to google");
-
         let oauth2Client = buildOauthClient();
-
-
 
         calendarId = Calendar.findOne({});
         show = Shows.findOne({_id: showId});
@@ -183,8 +170,7 @@ if(Meteor.isServer){
           resource: resource
         }, function(err, result){
           if(err){
-            console.log("<- Update Body Error");
-            console.log()
+
           }
         });
 
@@ -202,7 +188,13 @@ if(Meteor.isServer){
         let eventListCallback = Meteor.bindEnvironment(function(err, result){
           if(err){
             console.error("<-- LIST ERROR -->");
-            console.error(err);
+            //THIS IS A BAD. BUT I AM NOT HAVING THE TIME.
+            try{
+              console.error(err.message);
+            } catch(e){
+
+            }
+
           } else {
             for(calEvents of result.items){
               let showDocument = Shows.findOne({"google.id":calEvents.id});
@@ -244,8 +236,7 @@ if(Meteor.isServer){
                   if(error){
                     //handle the error
                   }else {
-                    console.info("<----------------------------------------------->");
-                    // console.info(result.data);
+
                     const loc = result.data.results[0].geometry.location;
                     // console.info(loc);
                     const uriArgs = {
@@ -278,9 +269,6 @@ if(Meteor.isServer){
           }
         });
 
-        console.log("Getting events to google");
-
-
         let oauth2Client = buildOauthClient();
 
 
@@ -295,8 +283,8 @@ if(Meteor.isServer){
             id: channelId,
             resourceId: resourceId
           }, function(err, result){
-            console.log(err);
-            console.log(result);
+            // console.log(err);
+            // console.log(result);
           })
         } else {
 

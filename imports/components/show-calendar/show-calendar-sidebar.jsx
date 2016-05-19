@@ -13,7 +13,7 @@ export default class ShowCalendarSidebar extends Component{
   }
 
   iconify(preIcon){
-    // console.log(this.props);
+    // 
     // if(this.props.weather){
       // return <i className="wi wi-"+ this.props.weather.icon></i>
       return "wi " + preIcon;
@@ -26,7 +26,7 @@ export default class ShowCalendarSidebar extends Component{
     return (
       <section>
         {(() => {
-          console.log(this.props.shows.length);
+          
           if(this.props.shows.length < 1) {
             return "No upcoming shows";
           }
@@ -45,7 +45,7 @@ export default class ShowCalendarSidebar extends Component{
         })}
         {(() => {
           if(this.props.shows.length > 0) {
-            console.log(this.props.shows.length);
+            
             if(this.props.shows[0].weather.icon != "wi-cloud-refresh") {
               return <h5>Weather from Forecast.io</h5>;
             }
@@ -76,7 +76,7 @@ export default createContainer(({params}) => {
     dog:{$in:params.ids},
     $and:[ {date:{ $gt: params.start}} , {date:{ $lte: params.end}}]
   };
-  console.log(Shows.find(query).fetch());
+  
 
   return {
     shows: Shows.find(query,{sort: {date: 1}}).fetch(),

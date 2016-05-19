@@ -40,12 +40,12 @@ export default class ShowPage extends Component {
 
   renderWeather(){
     if(this.props.show.weather.hourly){
-      // console.log(this.props.show.weather.hourly);
+      // 
       return(
         this.props.show.weather.hourly.map((hour)=>{
-          // console.log(hour.time);
+          // 
           const time = new Date(hour.time*1000);
-          // console.log(time);
+          // 
           return(
             <div className="hour">
               <div className="icon">
@@ -182,8 +182,8 @@ ShowPage.propTypes = {
 }
 
 export default createContainer(({params}) => {
-  console.log(params);
-  // console.log(this.props);
+  
+  // 
   // Meteor.subscribe("dog", params.id);
   Meteor.subscribe("show",params.showId);
   const show = Shows.findOne({});
@@ -197,16 +197,16 @@ export default createContainer(({params}) => {
     Meteor.subscribe("dog",show.dog);
     dog = Dogs.findOne({_id:show.dog});
     if(typeof dog !== 'undefined'){
-      console.log("IMAGES LOADED");
+      
       Meteor.subscribe("dogImages", dog.image);
       images = DogImages.findOne({});
     }
-    console.log("Dog LOADED");
+    
   }
 
 
 
-  console.log(show);
+  
   return {
     // dog: Dogs.find(),
     show,

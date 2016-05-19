@@ -70,20 +70,18 @@ JudgeGrid.defaultProps = {
 
 export default createContainer(({params}) => {
   // Meteor.subscribe("judges");
-  console.log(params);
   let judges = [];
   if(params.ids === undefined){
-    console.info("mounting main view");
+
     Meteor.subscribe("judges");
     const showId = false;
   } else {
-    console.info("mounting as child view");
+
     Meteor.subscribe("showJudges", params.ids);
     const showId = params.showId;
   }
 
   judges = Judges.find({}).fetch();
-  console.log(judges);
 
   return {
     judges,

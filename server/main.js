@@ -43,7 +43,7 @@ WebApp.connectHandlers.use('/auth', function(req, res, next) {
 WebApp.connectHandlers.use('/watcher', function(req, res, next) {
   console.log("WATCHER REQUEST");
   console.info("<---------------------->");
-  console.log(req.headers);
+
 
   if(req.headers['x-goog-resource-uri']){
     Meteor.call("google.update", req.headers['x-goog-channel-id'], req.headers['x-goog-resource-id']);
@@ -122,17 +122,13 @@ WebApp.connectHandlers.use('/cal', function(req, res, next) {
       if(err){
         console.log(err);
       } else {
-        console.log({$set:{'watch':response}});
         calendarId = Calendar.findOne({});
-        console.log(calendarId);
         let updateResult = Calendar.update({_id:calendarId._id},{$set:{'watch':response}});
-        console.log("UPDATING CALENDAR", updateResult);
       }
     });
 
     let listCalendarCallback = Meteor.bindEnvironment(function(err, results){
-      console.log(err);
-      // console.log(results);
+      
       console.log("CHECKING FOR CALENAR");
 
       //First case, we DON'T have a store calendar record.

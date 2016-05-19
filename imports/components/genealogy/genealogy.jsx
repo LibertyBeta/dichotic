@@ -14,7 +14,7 @@ export default class Genealogy extends Component{
   }
 
   drawChart(context, x, y, generation, dog){
-    console.log(dog);
+    
     context.textAlign = "center";
     context.fillStyle = "#000";
     context.font = "20px Verdana";
@@ -49,8 +49,8 @@ export default class Genealogy extends Component{
   }
 
   componentDidUpdate(prevProps, prevState){
-    console.log("UPDATE");
-    console.log(this.props.family);
+    
+    
 
     const canvas = document.getElementById('genealogy-chart');
     const ratio = window.devicePixelRatio;
@@ -60,18 +60,18 @@ export default class Genealogy extends Component{
     {/* canvas.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0); */}
     if(this.props.family !== prevProps.family){
       if (canvas.getContext) {
-        console.log(this.props.params.id);
+        
 		    const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.font = "bold 8pt Arial";
 
         let middle = (canvas.width / 2) / ratio;
         let vMiddle = canvas.height /2;
-        console.log(middle);
+        
 		    // context.fillText(this.props.family[this.props.params.id].name, middle, 20);
         this.drawChart(context, middle, 30, 0, this.props.family[this.props.params.id]);
       }
-      console.log("Updating canvas");
+      
     }
 
 
@@ -106,7 +106,7 @@ export default createContainer(({params}) => {
   let rootNode = Dogs.findOne({_id:params.id});
   let nodeMaker = function(id, depth, maxDepth){
     let nodeMap = {};
-    console.log(id);
+    
     let dog = Dogs.findOne({_id:id});
 
     if(dog){

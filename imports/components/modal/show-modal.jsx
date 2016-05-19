@@ -37,7 +37,7 @@ export default class ShowModal extends Component{
       if(error){
         console.error(error);
       } else {
-        console.log(result);
+  
         modal.props.dismiss();
       }
     });
@@ -46,13 +46,12 @@ export default class ShowModal extends Component{
   }
 
   addressChange(event){
-    console.log(event.target);
     let modal = this;
     Meteor.call("calendar.getAddreses", event.target.value, function(error, result) {
       if(error){
         console.error(error);
       } else {
-        console.log(result);
+  
         const tempAddress = []
         for(address of result){
           tempAddress.push({key: address.place_id, formatted:address.formatted_address});
@@ -60,13 +59,12 @@ export default class ShowModal extends Component{
         modal.setState({
           addresses: tempAddress
         });
-        console.log(modal.state.addresses);
+  
       }
     });
   }
 
   setRealAddress(value){
-    console.log(value)
     this.refs.location.value = value;
     this.setState({
       addresses: []

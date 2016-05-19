@@ -10,12 +10,12 @@ import {Dogs} from './dogs.js';
 import {Judges} from './judges.js';
 export const Shows = new Mongo.Collection('shows');
 
-// console.log(Keys);
+// 
 
 if (Meteor.isServer) {
 
   Meteor.publish('ourShows', function ourShowsPublication(dogIds) {
-    console.log("Subscribing for " + dogIds);
+    
     //Now lets check to see if we have updated weather
     if(dogIds.length > 0){
       // const checkShows
@@ -24,7 +24,7 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('show', function showPublication(id) {
-    console.log("Subscribing for Show " + id);
+    
     return Shows.find({_id:id});
   });
 
@@ -43,19 +43,19 @@ if (Meteor.isServer) {
       this.unblock();
       try{
         const response = HTTP.get("https://maps.googleapis.com/maps/api/geocode/json?address="+address.replace(" ", "+")+"&key="+Keys.google, {});
-        // console.log(response);
+        // 
         return response.data.results;
       }
       catch(e){
-        // console.info(e);
+        // 
         throw new Meteor.Error( 500, e.toString());
       }
     },
     'calendar.map'(id){
       this.unblock();
-      console.log("STARTING MAP");
+      
       const thisShow = Shows.findOne({_id:id});
-      // console.log(thisShow);
+      // 
       // if(thisShow.geometry)
       try{
         const uriArgs = {
@@ -68,16 +68,16 @@ if (Meteor.isServer) {
 
         const uri = "https://maps.googleapis.com/maps/api/staticmap?";
         const response = HTTP.get(uri, {params:uriArgs});
-        console.log(response);
+        
         return response.data.results;
       }
       catch(e){
-        console.info(e);
+        
         throw new Meteor.Error( 500, e.toString());
       }
     },
     'calendar.googleDescription'(id){
-      console.log("GENERATING description");
+      
         const aShow = Shows.findOne({_id:id});
         let description = '[DICHOTIC SHOW INFO BELOW. EDIT AT YOUR OWN RISK]';
         if(aShow.weather.summary){
@@ -91,7 +91,7 @@ if (Meteor.isServer) {
         description += '\n>DOG : ' + dog.name;
         const judges = Judges.find({_id:{$in:show.judges}}).fetch();
         let judgeString = '\n>JUDGES : '
-        console.log(judges);
+        
         for(judge of judges){
           judgeString += judge.name + ", ";
         }
@@ -119,7 +119,7 @@ Meteor.methods({
     }});
   },
   'calendar.addJudge'(showId,id) {
-    console.log("Updating show " + showId + " with judge " + id);
+    
     const result = Shows.update(
       {_id:showId},
       {$addToSet:
@@ -130,9 +130,9 @@ Meteor.methods({
     return result;
   },
   'calendar.insert'(object) {
-    console.log(object);
-    console.log("running insert");
-    // console.log("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key="+Keys.google);
+    
+    
+    // 
 
     const uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+object.location.replace(" ", "+")+"&key="+Keys.google;
     object['googParseError'] = false;
@@ -145,10 +145,10 @@ Meteor.methods({
       if(error){
         //handle the error
       }else {
-        console.info("<----------------------------------------------->");
-        // console.info(result.data);
+        
+        // 
         const loc = result.data.results[0].geometry.location;
-        // console.info(loc);
+        // 
         const uriArgs = {
           key: Keys.googleClient,
           center: loc.lat+","+loc.lng,
@@ -162,7 +162,7 @@ Meteor.methods({
           "&size=500x500"+
           "&type=roadmap" +
           "&zoom=15";
-        console.log(staticUri);
+        
         Shows.update(
           {_id:id},
           {
@@ -196,8 +196,8 @@ Meteor.methods({
       }
     })
     Meteor.call("google.sendEvent", id, function(e, r){
-      console.error(e);
-      console.error(r);
+      
+      
     })
 
 
